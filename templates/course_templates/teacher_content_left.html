@@ -1,0 +1,50 @@
+{% load static %}
+
+{% for section in sections %}
+      <div style="color:black; text-decoration:none;
+         background-color: lightblue; padding: 1em 1em; border:1px solid black; display: flex;
+         justify-content:space-between; align-items: center;"> 
+          <button data-bs-toggle="collapse"  class="accordion-button" data-bs-target="#collapseExample{{ forloop.counter }}"
+           aria-expanded="false" aria-controls="collapseExample{{ forloop.counter }}." style="width: 25em; padding:0.5em 1em;">
+              <span style="padding: 1em 0.5em 0.5em 1em; margin: auto 0px; ">
+                  {{ forloop.counter }}.  {{ section.section_name}} 
+                 <span style="color: purple;"> &nbsp; {{section.Difficulty}} </span> 
+              </span> 
+          </button>
+          <span style="padding: 0em 1em;">
+            <a class="btn btn-outline-danger" href="{% url 'sections:deletesection' slug=section.slug %}">
+              <img src="{% static 'sections/photos/delete.png' %}" style="width: 1.2em;">
+            </a>
+            <a class="btn btn-outline-light" 
+            href="{% url 'sections:updatesection' course_slug=course.slug section_slug=section.slug %}">
+              <img src="{% static 'sections/photos/edit.png' %}" style="width: 1.2em;">
+            </a>
+            <a class="btn btn-outline-dark" href="{% url 'modules:createmodule' course_slug=course.slug section_slug=section.slug %}">
+              Add Module
+            </a>
+          </span>
+        </div>
+
+        <!--Collapse section for each section-->
+        <div class="collapse" id="collapseExample{{forloop.counter}}" style="padding: 0em 1em;">
+           {% for module in section.has_modules.all %}
+              <div style=" padding:0.7em 0.5em; border: 1px solid grey;">
+                <a style="color: black; text-decoration: none; padding:0em 0.5em;" 
+                href="{% url 'modules:detailmodule' course_slug=course.slug section_slug=section.slug slug=module.slug %}"> 
+                  <span>
+                   {{forloop.counter}}. - {{module}} module
+                  </span> 
+                </a>
+                <span>
+                  <a class="btn btn-outline-primary" href="{% url 'modules:updatemodule' course_slug=course.slug slug=module.slug %}">
+                    Update
+                  </a>
+                  <a class="btn btn-outline-danger" href="{% url 'modules:deletemodule' course_slug=course.slug slug=module.slug %}">
+                    Delete
+                  </a>
+                <span>
+              </div>
+           {% endfor %} <!-- End of modules loop -->
+        </div>
+        <!--collapse section end-->
+      {% endfor %}

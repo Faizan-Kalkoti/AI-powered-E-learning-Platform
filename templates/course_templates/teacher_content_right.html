@@ -1,0 +1,121 @@
+{% load static %}
+
+<div style="text-align: center; padding: 0.9em;">
+    {% if not join_course_password %}
+
+    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#set-course-password">
+        Set Password for course
+    </button>
+   
+    {% else %}
+
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#set-course-password">
+        Update password for course
+    </button> &nbsp; 
+
+    <a class="btn btn-danger" href="{% url 'courses:removepassword' slug=course.slug %}">
+        Remove Password for course
+    </a>
+    <br>
+    <br>
+
+    <div style="padding: 0.2em 1em; text-align: center; justify-content: center; display: flex;">
+      <div class="row" style="margin: 0%; width: 20em; border: 1px solid rgb(130, 120, 120); border-radius: 1em;">
+      <div class="col-9" style="text-align: right; padding: 0.3em 1em;">
+        Password: <span id="passwordid"> {{join_course_password}} </span>
+      </div>
+      <div class="col-3" style="text-align: center;">
+        <span id="showbuttonid">
+          <button onclick="showpassword()" style="border:0px; background-color: transparent;">
+            <img style="width:1.8em; border:0px;" src="{% static 'courses/photos/show_pass.png' %}">
+          </button>
+        <span>   
+      </div>
+      </div> 
+    </div>
+    {% endif %}
+
+    <script>    
+      // Call myFunction after 3 seconds
+      setTimeout(hidepassword, 100);
+
+      function hidepassword(){
+        var password = document.getElementById("passwordid").innerText;
+        console.log(password);
+        var enc="";
+        for(var i=0; i<password.length; i++){
+          enc = "*"+enc;
+        }
+        document.getElementById("passwordid").innerText = enc;
+        document.getElementById("showbuttonid").innerHTML = ` 
+        <button onclick="showpassword()" style="border:0px; background-color: transparent;">
+          <img style="width:1.8em; border:0px;" src="{% static 'courses/photos/show_pass.png' %}">
+        </button>`
+      }
+
+      function showpassword(){
+        var password = document.getElementById("passwordid").innerText;
+        console.log(password);
+        var enc="";
+        for(var i=0; i<password.length; i++){
+          enc = "*"+enc;
+        }
+        document.getElementById("passwordid").innerText = "{{join_course_password}}";
+
+        document.getElementById("showbuttonid").innerHTML = ` 
+        <button onclick="hidepassword()" style="border:0px; background-color: transparent;">
+          <img style="width:1.8em; border:0px;" src="{% static 'courses/photos/hide_pass.png' %}">
+        </button>`
+      }
+    </script>
+</div><hr>
+
+<div style="border: 1px solid rgb(76, 76, 76); padding:1em 1em; text-align: center;
+     border-radius: 0.3em;">
+     <h3 style="text-align:center;"> Tests </h3>
+     <hr>
+         <img style="width: 16em;" src="{% static 'courses/photos/test_go-r.png' %}" alt="">
+         <br>
+         <a class="btn btn-dark"  style="width: 14em;" href="{% url 'coursetests:createtest1' course_slug=course.slug %}">
+          Create Tests For this Course </a> &nbsp;
+          <a class="btn btn-dark" style="width: 12em;" href="{% url 'coursetests:listquestions' course_slug=course.slug %}">
+            See all the questions
+          </a>
+</div>
+
+
+<!-- Modal For setting the course password (by teachers) -->
+
+<!-- Modal course password setting form -->
+<div class="modal fade" id="set-course-password" data-bs-backdrop="static" style="padding: 1em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="Modal_level_body" style="text-align: center;">
+        <!--modal body -->
+          
+        <div style="font-size: 1.3em; text-align:center; font-weight: 500; padding: 0em 1em;">
+          <br> 
+          <img id="robo-img" style="max-width:13em;" src="{% static 'courses/photos/deadline_robot.png' %}">
+          <div>
+            Set the password for the course!
+          </div>
+
+         <!-- form for submitting the deadline --> 
+         <form id="setcoursepasswordform" style="padding:1em;" action="{% url 'courses:createcoursepassword' slug=course.slug %}" method="POST" >
+           <input id="set-password" name="set-password" class="form-control form-control-lg" placeholder="Set password" type="password">
+           <br>
+           {% csrf_token %}
+           <button class="btn btn-dark" type="submit">Submit </button> 
+         </form><br>
+         
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of modal -->

@@ -1,0 +1,55 @@
+{% load static %}
+
+{% if not user.student in course.student.all %}
+  <div style="padding: 0em 2em; padding-bottom: 1em;"> 
+    <div style="padding:1em; border-top: 2px solid white;
+    border-right: 2px solid white; border-left:1px solid rgb(142, 142, 142);
+    border-bottom: 1px solid rgb(142, 142, 142);
+    background: linear-gradient(225deg, #cacaca, #f0f0f0);
+    box-shadow:  -20px 20px 60px #bebebe,
+                 20px -20px 60px #ffffff; border-radius: 1em;">
+      
+        <h3 style="text-align: center;"> About Your Instructor</h3>
+        <hr>
+  
+      <div class="row" style="margin: 0px; border-bottom: 1px solid rgb(129, 118, 118);">
+        <div class="col-lg-6" style="">
+          <div style="padding: 1em;">
+            {% if teacher.profile_photo %}
+            <img style="width: 10em; height: 10em; border-radius: 50%;" src="{{teacher.profile_photo.url}}" alt="">
+            {% else %}
+            <img style="max-width: 10em; max-height: 10em; border-radius: 50%;" src="{% static 'accounts/photos/default_user.png' %}" alt="">
+            {% endif %}
+          </div>
+        </div>
+  
+        <div class="col-lg-6" style="display: flex; flex-direction: column; justify-content: center;">
+  
+          <div class="" style="border-bottom: 1px solid rgb(176, 165, 165); padding-bottom:0.5em ;">
+            <span style="font-size:1.05em; font-weight:500"> Instructor: </span>
+            <br> {{teacher.name}} 
+            <br>
+          </div>
+  
+           <div class="" style="border-bottom: 1px solid rgb(176, 165, 165);padding-bottom:0.5em ;" >
+            <span style="font-size:1.05em; font-weight:500">Experience: </span> <br>
+           <i> {{teacher.experience}} </i>
+           </div>
+  
+           <div >
+            <span style="font-size:1.05em; font-weight:500">Total courses: </span>
+            {{teacher.made_course.count}}
+           </div>
+          
+        </div>
+      </div>
+  
+      <div style="padding: 0em 2.5em; padding-top: 0.3em;">
+        <div>
+          <span style="font-size:1.05em; font-weight:500"> Description: </span> {{teacher_bio}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}

@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<div style="padding: 2em; padding-bottom: 0em;">
+<div style="padding:2em 2em; background: linear-gradient(to top right, rgb(30,30,30),rgb(50,50,50) ); border-radius: 1em; color:white;">
+  <div class="row">
+    <div class="col-lg-8">
+
+      <h2>Course Name: <span style="font-weight:400;"> {{course.course_name}} </span></h2> 
+      <h4> <b>By Instructor: </b> {{ course.made_by_teacher}}</h4>
+      <div style="font-size: 1.2em;"><b> Date of creation:</b> {{course.date_generated|date:"l, F j, Y"}} <br>
+          <b>Enrolled students: </b> <span style="color: azure;"> {{course.student.count}} </span></div> 
+     
+      <div class="row">
+       <div class="col-lg-12">
+         <p style="font-size: 1.2em; color:lightgrey;"><b> Course description: - </b><br>
+           <span style="font-weight: 500;"> <i>{{course.course_description}} </i></span> </p>
+       </div>
+      </div>
+      <hr>
+
+    {% if user.teacher.name == course.made_by_teacher.name %}
+       {% if course.iscomplete == True %}
+           <a class="btn btn-secondary" href="">
+            Course Completed  </a>
+       {% else %}
+           <a class="btn btn-secondary" href="{% url 'courses:coursecompleted' slug=course.slug %}">
+            Mark the course as completed  </a>
+       {% endif %}
+
+
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Course settings
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" style="border:1px solid grey;" href="{% url 'courses:updatecourse' slug=course.slug %}">
+          1. Update Course</a></li>
+        <li><a class="dropdown-item" style="border:1px solid grey;" href="{% url 'courses:deletecourse' slug=course.slug %}">
+          2. Delete Course</a></li>
+        <li><a class="dropdown-item" style="border:1px solid grey;" href="{% url 'sections:createsection' slug=course.slug %}">
+          3. Create Section</a></li>
+      </ul>
+    </div>
+    
+    <!-- For students -->
+    {% else %}
+      {% if user.student and user.is_authenticated %}
+          {% if user.student in course.student.all  %}
+              <h4>You are a part of this course</h4> <br>
+               <!--start the course button for re-structuring-->
+               
+               <!-- insert your condition here (if condition) -->
+               {% if teststatus %}
+                   You have started this course on {{date_started.date_started}}
+                   {% if not deadline %}
+                   <div style="padding:1em 0em;">
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#set_deadline2">
+                      Set Deadline now</button>
+                   </div>
+                   {% endif %}                       
+               {% else %}
+                   <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirm_course_modal">
+                    Start Your Course!</button>  
+               {% endif %}
+               <!-- end of the condtion-->
+              
+
+               <!--end of this part -->
+          {% else %}
+              {% if join_course_password %}
+                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#join_course">
+                    Join Course</button>
+              {% else %}
+                 <a class="btn btn-dark" href="{% url 'courses:joincourse' slug=course.slug %}"> Join Course </a>
+              {% endif %}
+          {% endif %} 
+        
+      {% endif %}
+    {% endif %}
+
+    </div>
+    <div class="col-lg-4" style="text-align: center;">
+      {% if course.course_img %}
+         <img class="course-detail-image"  src="{{course.course_img.url}}" alt="coures-image">
+      {% else %}
+         <img class="course-detail-image"  src="{% static 'courses/photos/robot_static_hi.png' %}" alt="coures-image">
+      {% endif %}
+    </div>
+  </div>
+
+</div> </div>
+<!--End of the course introduction -->
+
+
+
+
+<!-- Start of the normal sections -->
+<div class="row" style="margin: 0px; padding:2em;" >
+  <!-- Start of the new row (main) -->
+
+  <!-- (1) first modal of the start course button -->
+  <!-- (2) this contains models for when the "No knowledge button is clicked!"-->
+  {% include "course_templates/pop_up_part_1.html" %}
+  {% include "course_templates/pop_up_part_2.html" %}
+  <!-- End of the Modals for starting the course -->
+
+
+<!-- Start of the first main column -->
+<div class="col-lg-7" style="background-color: whitesmoke; padding:1em;">
+
+  
+  <div style="text-align:center;">
+    <h3 class="course-section-heading" style="text-align:center; z-index:2; position:relative; top:0.4em;"> Sections </h3>
+    <br>
+    <img class="course-section-heading" style="position:absolute; top:0.4em; height:5em; left:39%;" src="{% static 'courses/photos/section_heading1.png' %}">
+  </div>
+  
+  <hr>
+
+  <!-- This is for the People that have not taken the course -->
+  {% if user.is_authenticated and user.student %} <!-- if user is authenticated (1)--> 
+    {% if user.student in course.student.all  %} <!-- if user has taken the course (2)-->
+
+    {% else %}
+         <!--If user has not taken the course (2) -->
+         {% include 'course_templates/guestuser_course_detail.html' %}
+    {% endif %} 
+    <!--end of if-else of (student has taken course or not) (2)-->
+
+  {% else %} 
+   <!-- If user is not authenticated  (1) -->
+  
+    <!-- If user is a teacher that has made the coures -->
+    {% if user.teacher.name == course.made_by_teacher.name %}
+      <!-- This is to store teacher's contents here -->
+      {% include 'course_templates/teacher_content_left.html' %}
+    {% else %} 
+        <!--If the person is not a teacher who has made the course -->
+        {% include 'course_templates/guestuser_course_detail.html' %}
+    {% endif %}
+    <!-- end of this condition (to check for teacher)-->
+  
+  {% endif %} 
+  <!-- end of if-else for if user is not (authenticated-student) (1) -->
+
+
+
+
+<!-- This is for the students that have taken the course -->
+{% if user.is_authenticated and user.student %} <!-- if user is authenticated (1)-->
+{% if user.student in course.student.all  %} <!-- if user has taken the course (2)-->
+   <!--Start of the student content here -->
+   <!--this template displays the student information for the course 
+    if the student has taken this course then -->
+       {% include 'course_templates/student_content_left.html' %}
+   <!-- End of the main game -->
+
+{% endif %} <!--End of the student checking  here-->
+{% endif %} <!-- End of the authenticatoin here-->
+
+</div> <!--col-6-lg ended here (1st outer column) -->
+
+
+
+<!-- Start of the revision section -->
+<div class="col-lg-5" style="background-color: whitesmoke; padding:1em;">
+  <!--start of the second outer column -->
+{% if user.is_authenticated and user.student %}
+  {% if user.student in course.student.all  %} 
+    {% include 'course_templates/student_content_right.html' %}
+  {% endif %}
+{% endif %}
+<!-- end of the authenticated user part-->  
+
+
+
+
+<!-- right part of the page for teachers who made the course -->
+  {% if user.is_authenticated and user.teacher %}
+    {% if user.teacher.name == course.made_by_teacher.name %}
+
+    <!-- For teacher right side -->
+    {% include 'course_templates/teacher_content_right.html' %}
+
+    {% endif %}
+  {% endif %}
+  <!-- this has ended  (teacher's right part of the page)-->
+
+
+  {% if user.is_authenticated %}
+  {% if user.teacher.name == course.made_by_teacher.name %}
+  {% else %}
+  <br> <br> <br>
+     {% include 'course_templates/guestuser_right.html' %}
+  {% endif %}
+  {% endif %}
+
+  <!-- if the user is not authenticated -->
+  {% if not user.is_authenticated %}
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <div class="row" style="margin: 0%;">
+
+      <div class="col-7" style="text-align: right;">
+        <img onclick="clickrobot()" id="rb-hi" style="width:15em;" src="{% static 'courses/photos/robot_static_hi.png' %}" alt="">
+      </div>
+
+      <div class="col-5" style="text-align: left;">
+        <div style="padding: 1em;"></div>
+        <div id="robot-txt" style="border: 1px solid grey; display: flex; 
+        width: 10em; padding: 0.7em; padding-bottom: 1.4em; box-shadow: -10px 10px 2em rgb(114, 114, 114); 
+        opacity: 0; font-size: 1.1em; align-items: center; background-color: rgb(34, 34, 34); 
+        color: white; clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 28% 85%, 5% 100%, 15% 85%, 0 85%);">
+          Please login to access this course!
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {% include 'course_templates/guestuser_right.html' %}
+
+  {% endif %}
+  
+
+
+
+<!-- This script is to show the animation of the robot if you have not logged in -->
+<script>
+  var robot_hi = document.getElementById('rb-hi');
+  robot_hi.addEventListener("mouseover", function(){
+    robot_hi.src = "{% static 'courses/photos/robot_hi.gif' %}";
+    robot_hi.style.width ="16em";
+    robot_hi.style.transition = "1s";
+    var robot_text = document.getElementById('robot-txt');
+    robot_text.style.opacity ="1";
+    robot_hi.style.transition ="1s";
+
+    setTimeout(function() {
+                    robot_hi.src = "{% static 'courses/photos/robot_static_hi.png' %}";
+                    robot_text.style.opacity ="0";
+                    robot_text.style.transition ="1s";
+                    robot_hi.style.transition = "2s";
+                }, 5550);
+  }); //event listener finished
+
+  function clickrobot(){
+    window.location.href = "{% url 'accounts:login' %}";
+  }
+</script>
+<!--script ended here-->
+
+</div>
+
+</div><!--End of the second outer column -->
+</div> <!--div to end the row of the grid layout -->
+
+<script src="{% static 'accounts/js/bootstrap.bundle.min.js' %}"></script>
+
+
+<!-- included the script tag and its content here -->
+<!-- if you want to modify the code for the content being displayed in the model 
+for each level you go to this template -->
+{% include 'course_templates/level_model_content.html' %}
+<!-- End its declaration here -->
+
+{% endblock content %}

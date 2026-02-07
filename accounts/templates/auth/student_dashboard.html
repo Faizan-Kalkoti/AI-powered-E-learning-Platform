@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="row" style="margin: 0px; padding:0em 2em;">
+  <div class="col-lg-3" style="padding: 3em 1em; text-align:center;">
+   
+  <div class='teacher-settings1' style="background: linear-gradient( to bottom left, rgb(67,71,80), rgb(47,43,42)); 
+    padding: 1em; border-radius: 2em; box-shadow: -1em 1em 2em grey ;">
+    
+    {% if user.is_superuser%}
+      <a style="text-decoration: none;" href="{% url 'admin:index' %}">Go to the admin page! </a>
+    {% elif user.student %}
+      <div style="padding: 1em; padding-bottom: 2em; text-align: center;">
+       
+       <div>
+         <span style="font-size: 1.5em; font-weight: bold; text-shadow: -0.2em 0.2em 0.5em grey;
+         background: lightgrey; padding: 0.6em; border-radius: 1em;">
+           Student Dashboard</span></div>
+           <br><br>
+           
+      <img style="width: 200px; height: 200px; border-radius: 50%; background-color: white;
+      border: 1px solid rgb(73, 73, 73); box-shadow: -1em 1em 2.5em rgb(37,33,32);"
+          src="{{user.student.profile_photo.url}}" alt="image">
+   
+      </div>
+      <h5 style="text-align: center; color: rgb(228,232,233); text-shadow: -0.5em 0.5em 0.7em black;
+      font-size: 1.3em; letter-spacing:1px; ">Name: {{user.username}}</h5>
+      <!-- Start of the options -->
+      <div class="teacher-options">
+   
+     <div class="accordion" >    
+       <div class="accordion-item">
+           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+           data-bs-target="#collapseoption1" aria-expanded="false" aria-controls="collapseoption1"
+           style="border: 1px solid black;"> 
+            My Courses
+          </button>
+          <div class="collapse" id="collapseoption1" style="width: 16em;">
+           <div class="card" style="text-align: center;" >
+             <button class="teacher-option-links" onclick="showcourses()"> 1. Show my courses</button>
+             <button class="teacher-option-links" onclick="showcompletedcourses()"> 3. Completed courses</button>
+           </div>
+         </div>
+       </div>
+   
+       <div class="accordion-item">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#collapseoption2" aria-expanded="false" aria-controls="collapseoption2"
+          style="border: 1px solid black;">  
+             Study Analytics
+          </button>
+          <div class="collapse" id="collapseoption2" style="width: 16em;">
+           <div class="card" >
+             <!-- <a class="teacher-option-links" href=""> 1. Show Students</a> -->
+             <button class="teacher-option-links" id="showgraphs"> 1. Show Students Graphs</button>
+             <button class="teacher-option-links">2. Student Queries </button>
+           <!-- <a class="teacher-option-links" href=""> 2. Student Queries</a> -->
+           </div>
+         </div>
+       </div>
+   
+       <div class="accordion-item">
+         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+         data-bs-target="#collapseoption3" aria-expanded="false" aria-controls="collapseoption3"
+         style="border: 1px solid black;"> 
+           My Assignments
+          </button>
+          <div class="collapse" id="collapseoption3" style="width: 16em;">
+           <div class="card" >
+             <a class="teacher-option-links" href=""> 1. Check for weekly assignments</a>
+             <a class="teacher-option-links" href=""> 2. Give tests</a>
+           </div>
+         </div>
+       </div>
+   
+   
+       <div class="accordion-item">
+         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+         data-bs-target="#collapseoption4" aria-expanded="false" aria-controls="collapseoption4"
+         style="border: 1px solid black;">
+           User Settings
+         </button>
+         <div class="collapse" id="collapseoption4" style="width: 16em;">
+           <div class="card" >
+             <a class="teacher-option-links" href=""> 1. Delete User</a>
+            <!-- <a class="teacher-option-links" href=""> 2. Change password</a> -->
+             <button class="teacher-option-links" onclick="ChangeProfile1()"> 3. Change Profile-Pic</button>
+           </div>
+         </div>
+       </div>
+     </div><!--End of accordion items outer div class -->
+   
+   
+        </div>
+        <!-- end of the options -->
+    </div>
+    {% endif %}
+   <!--Copied part ends here --> 
+
+  
+</div> <!-- end of the col-lg-3-->
+
+<div class="col-lg-9">
+  <div id="student-content" style="padding:3em 3em;">
+    <div style="padding: 3em;"></div>
+    <div class="row">
+      <div class="col-lg-6" style="align-items: center; justify-content: center; 
+      display: flex; flex-wrap: wrap; flex-direction: column;">
+        <img style="width: 15em;" src="{% static 'accounts/photos/students_person.jpg' %}" alt="">
+        <br>
+        <a class="btn btn-dark guidebtn" href="{% url 'about' %}"
+        style="font-size: 1.2em;">
+          Guide for Students
+        </a>
+      </div>
+      <div class="col-lg-6" style="border: 1px solid black; border-radius: 2em; flex-direction: column;
+      background-color: whitesmoke; display: flex; justify-content: center; align-items: center;">
+      <div><h3>Your Average Performance</h3></div><br>
+
+        <img style="width: 13em;" src="{% static 'accounts/photos/robot_dash.png' %}" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end of the row -->
+
+
+
+
+<script src="{% static 'js/boot/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/boot/popper.min.js' %}"></script>
+{% include "accounts_dashboard/student_dashboard1.html" %}
+
+<script>
+  // This is to show the courses by the student
+  function showcourses(){
+    let studentcourses = document.getElementById('student-content');
+    studentcourses.innerHTML=`
+    <div style="background:lightgrey; padding:2em; border-radius: 1em;">
+      <div>
+        <h2 style="text-align:center;"> Your Courses </h2>
+      </div>
+      <div style="text-align:center;">
+        <div class="row">
+          <div class="col-lg-12">
+             <img id="robo-img" onclick="robotclick()" style=" transition:1s; width:14em;" src="{% static 'accounts/photos/robot_student_dashboard.png' %}">
+             <span id="robo-course" style="transition: 1s; padding:1em; border-radius:0.5em; background-color:whitesmoke; display:none;"> 
+              Click below to go to the course! <span>
+          </div>
+        </div>
+      </div>
+
+      {% for course in courses %}
+        {% if not course in course_completed_list %}
+        <div class="courselink" style="">
+         <a style="color:black; text-decoration: none;" href="{% url 'courses:singlecourse' slug=course.slug %}" > 
+           {{course}} 
+            [ status: <span style="color:red;"> Not completed </span> ]
+         </a>
+        </div>
+        <br>
+        {% endif %}
+      {% endfor %}
+
+    </div>
+    `;
+  }
+
+  function robotclick(){
+    document.getElementById('robo-course').style.transition = "1s";
+    document.getElementById('robo-course').style.display = "inline";
+    
+  }
+
+
+
+  // This is to change the profile picture of the student 
+  function ChangeProfile1(){
+    var student_display = document.getElementById('student-content');
+    student_display.innerHTML = `
+       <div> 
+        <div style="text-align:center; padding:2em; border: 1px solid black; border-radius: 8px;">
+        <h3 style="text-align:center;"> Change the Profile Picture </h3> <hr>
+         <form  id="changeformid" method="POST" enctype="multipart/form-data"> 
+          {% csrf_token %}
+         <div class="mb-3">
+          <label for="formimage" class="form-label">Upload the image</label>
+          <input class="form-control" type="file" id="formimage" name="formimage">
+         </div>
+          <button class="btn btn-dark" type="submit" onclick="ChangeProfile2()">Update Picture</button>
+         </form>
+        </div>
+       </div>`;
+  }
+
+  
+</script>
+
+
+{% endblock content %}

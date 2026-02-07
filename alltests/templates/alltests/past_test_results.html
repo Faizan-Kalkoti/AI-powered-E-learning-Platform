@@ -1,0 +1,67 @@
+{% extends "base.html" %} 
+{% load static %}
+{% block content %}
+<br>
+<div style="padding:1em;">
+  <div style="padding:2em;">
+        <h2 style="text-align:center;">Your Past Results</h2>
+    <div class="row" style="margin:0px; justify-content:center;">
+        <div class="col-lg-8 col-sm-6">
+            <div style="text-align:center; padding:0em 0.5em;">
+                <img style="width:15em;" src="{% static 'coursetests/photos/robot_Test_result.png' %}"> 
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="padding:1em; margin:0px; justify-content:center;">
+        <div class="col-lg-10 col-sm-12">
+            <div style="padding:0.5em 1em; background-color: rgb(210, 236, 205); border-radius: 1em; text-align: center;
+            box-shadow: 0em 1em 2em rgb(239, 236, 231); border: 1px solid rgb(192, 202, 216);
+            font-size: 1.2em; font-weight: 500;">
+            <div class="row">
+                <div class="col-lg-1">
+                </div>
+                   <div class="col-lg-5" style="border-right:1px solid green; border-left:1px solid green;">
+                    {% if student_results %}
+                        Total Number Of Tests Submitted: <span style="color: rgb(89, 140, 185);">
+                            {{student_results.count}}</span> 
+                    {% endif %} 
+                   </div>
+                   <div class="col-lg-5" style="border-left:1px solid green; border-right:1px solid green;">
+                    {% if missed_tests %}
+                        Total Periodic Tests Missed: {{missed_tests.count}}
+                    {% endif %}
+                   </div>
+               </div>
+            </div>
+            <br>
+
+            <div style="padding:1em; border-radius: 1em;">
+                {% if student_results %}
+                <div style=" display: grid; grid-template-columns: repeat(auto-fit, minmax(20em, 1fr)); gap: 2em;">
+                    {% for result in student_results %}
+                    <div style="font-size:1.2em; padding: 0.5em 1em; background: linear-gradient(to top right, rgb(144, 198, 229), rgb(178, 229, 204)); border-radius:1em;
+                    box-shadow:-1em 1em 1.4em rgba(183, 202, 214, 0.786);">
+                      <div style="text-align: center; font-size:1.1em;"> <b>TEST: {{forloop.counter}}</b> </div>
+                      <div class="test-result-contents">Test Name: <span style="font-weight: bold;">{{result.test_name}}</span></div>
+                      <div class="test-result-contents"> Test Status: <span style="font-weight: bold;">{{result.status}}</span> </div>
+                      <div class="test-result-contents"> Score : <span style="font-weight: bold;">{{result.score}}/{{result.total_marks}}</span></div>
+                      <div class="test-result-contents">Date given: <span style="font-weight: bold;">{{result.for_date}}</span></div>
+                      <div class="test-result-contents">On time: <span style="font-weight: bold;" >{{result.on_time}}</span></div>
+                      <hr>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 1em; text-align:center;">
+        <a class="btn btn-dark" href="{% url 'courses:singlecourse' slug=course.slug %}">Go back</a>
+    </div>
+
+  </div>
+</div>
+<br>
+{% endblock %}

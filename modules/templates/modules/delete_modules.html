@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block content %}
+<div class="row" style="margin:0px; padding: 2em; justify-content:center;">
+<div class="col-lg-5">
+<div style="padding:2em; background-color: lightgrey;">
+    <h3 style="text-align: center;"> Delete Module</h3>
+    <form method="POST" enctype="multipart/form-data">
+        <br>
+        <div style="text-align:center;">
+        <img style="width:15em; border:2px solid black;" src="{% static 'courses/photos/caution.jpg' %}">
+        </div>
+        <br>
+       <h5 style="text-align:center;"> Do you want to Delete this module? </h5>
+       <br>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <div style="text-align:center;"> 
+         <input type="submit" class="btn btn-warning" value="Delete Module">
+         <a class="btn btn-dark" style="color:whitesmoke;" onclick="goBack()">
+           Cancel</a>
+        </div>
+    </form>
+</div></div>
+</div>
+<br><br>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+{% endblock %}

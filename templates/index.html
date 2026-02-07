@@ -1,0 +1,419 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<script src="{% static 'base/index_script.js' %}"></script>
+
+<!-- Styling done in accounts.css file -->
+<div style="position: absolute; z-index: -100; right:0em; background-color: black;">
+    <img  style="width: 25em; border: 0px;" src="{% static 'accounts/photos/home_bg3.jpg' %}" alt="">
+</div>
+
+<div class="row home-base-row">
+
+    <div class="col-lg-3 home-page-robot-man" style="position:absolute;">
+
+        <div class="home-robot" style="width: fit-content;">
+           <a style="text-decoration: none; color: black;" href="{% url 'about' %}">
+             <div id="rbt-text" class="rbt-text"> Need more info? </div>
+             <img id="home-robot1" style="width: 10em;" src="{% static 'accounts/photos/robot_homer.png' %}" alt="">
+          </a>
+        </div>
+        
+    </div>
+
+    <div class="col-lg-6" style="text-align: center;">
+        <h1 class="home-heading" style=" padding: 0.2em 0em; background-image:linear-gradient(43deg, rgb(86, 51, 182), rgb(107, 130, 222), rgb(171, 240, 216));
+        -webkit-background-clip: text; color:transparent;">AI Enhanced Learning Experience</h1>
+        <br>
+        <h2 style="font-size: 1.5em; color: rgb(80, 80, 133);">Achieve your learning goals effortlessly with customizable paces and personalized 
+            revision plans. Join us in shaping the future of education. Start your journey today!</h2>
+            <br>       
+
+            <div style="display: flex; flex-direction: row; justify-content:center;
+            flex-wrap: wrap;">
+
+             <div class="bg-text-len" style="padding: 1em 0em; ">
+                <a style="text-decoration: none; color: white;" href="{% url 'courses:allcourseslist' %}">
+                <button class="butn1">
+                   <h4> Start Learning</h4>
+                </button> </a>
+             </div>
+                
+
+                {% if user.is_authenticated %}
+                <div class="bg-text-len" style="padding: 1em 0em; ">
+                    <a style="text-decoration: none; color: white;" href="{% url 'accounts:logout' %}">
+                        <button class="butn">
+                           <h4> Logout</h4>
+                        </button>
+                    </a>
+                </div>
+
+                {% else %}
+                <div class="bg-text-len" style="padding: 1em 0em;" >
+                <a style="text-decoration: none; color: white;" href="{% url 'accounts:login' %}">
+                    <button class="butn">
+                       <h4> Login</h4>
+                    </button></a>
+                {% endif %}     
+                </div>       
+            </div> 
+    </div>
+    <div class="col-lg-3" style="position:absolute;">
+       
+    </div>
+</div>
+
+<div>
+    <img style="width: 100%; height: 8em;" src="{% static 'accounts/photos/flow3.gif' %}" alt="">
+</div>
+
+
+
+<!-- home page design -->
+<!-- first row of the description-->
+<div class="all-info-rows" style="padding: 0em 2em;"> 
+
+<div class="row info-row"  style="margin: 0px;" >
+    <div class="col-lg-6">
+        <div class="home-text-boxes1">
+       <div class="infomation-div" > <div class="home-box-heading"> Personalized Periodic Test </div>
+        <p class="home-box-content">
+            Customized assessments matching your pace and proficiency. 
+            Tailored questions, formats, and weekly tests align with your goals, 
+            ensuring targeted learning and progress.
+        </p></div>
+    </div>
+    </div>
+
+    <div class="col-lg-6" style="padding: 3em; align-items: center;">
+        <img class="img-width" src="{% static 'photos/test.png' %}" alt="">
+    </div>
+</div>
+    <!-- [1] First row ended -->
+
+    <!-- [2] Second row ended -->
+    <div class="row info-row"  style="margin:0px;">
+        <div class="col-lg-6" style="padding: 1em 4em; align-items: center; display: flex; 
+        flex-direction: column; justify-content: center;">
+        <!-- <img class="img-width" src="{% static 'photos/feedback.png' %}" alt="">  -->
+        <img style="max-width:23em; filter: drop-shadow(0em 1.5em 3em rgb(161, 184, 249, 0.8));" class="img-width" src="{% static 'photos/robot_Feedback.png' %}" alt=""> 
+        </div>
+
+        <div class="col-lg-6" >
+        <div class="home-text-boxes1">
+            <div class="infomation-div2" > <div class="home-box-heading"> Immediate Feedback Mechanism </div>
+                <p class="home-box-content">
+                    Real-time insights, powered by AI. Instant NLP feedback and personalized recommendations,
+                     directly from your test results. Elevate your learning with AI-driven feedback, 
+                     delivered seamlessly through our website.
+                </p></div>
+        </div>
+        </div>
+    </div>
+    <br>
+    <!-- [2] end of the second row-->
+
+
+    <!--[3] third row started -->
+    <div class="row info-row" style="margin:0px;" >
+
+        <div class="col-lg-6">
+         <div class="home-text-boxes1">
+           <div class="infomation-div" ><div class="home-box-heading"> Learn Effeciently with Adaptive Deadline Management </div>
+           <p class="home-box-content">
+                Navigate your learning path with precision. Harnessing predictive analytics and adaptive 
+                learning powered by machine learning, we personalize your journey, ensuring timely 
+                success through tailored suggestions and real-time adjustments. 
+            </p></div>
+        </div>
+        </div>
+
+        <div class="col-lg-6" style="padding: 3em; align-items: center;">
+            <img class="img-width" src="{% static 'photos/adaptive.png' %}" alt="">
+            
+        </div>
+    </div>
+    <!-- [3] third row ended -->
+</div>
+<!-- End of the information rows section -->   
+
+
+
+
+
+<!--Start of the end section after last (fAQ) section -->
+<div style="padding:4em 2em;"> 
+
+    <div style="padding:3em 1em;"> 
+        <div class="row" style="justify-content: center; margin: 0px; align-items: center;">
+            <div class="col-lg-4" style="text-align: right;">
+                <img style="width: 10em;" src="{% static 'photos/gears.jpg' %}" alt="">
+            </div>
+            <div class="col-lg-4">
+                <h2 style="text-align: center;">Frequently Asked Questions</h2>
+            </div>
+            <div class="col-lg-4">
+                
+            </div>
+        </div>
+    </div>
+
+<div class="row" style="justify-content: center; margin: 0px;">
+
+        <div class="col-lg-3"> <!--Start of the left column-->
+            <div style="text-align: center;">
+                <img style="height: 40vh;" src="{% static 'photos/question_girl.png' %}" alt="">
+            </div>
+        </div><!--end of the left column-->
+
+        <div class="col-lg-6" style="font-size: 1em;"><!--start of the center column-->   
+
+<div class="accordion" id="accordionExample">
+
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+         <span style="font-size: 1.1em;"> What is different about this website? </span>
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body" style="font-size: 1.1em;">
+            Our platform stands out by not only emphasizing learning but also prioritizing long-term
+             knowledge retention. After each assessment, the system intelligently recommends specific
+              sections and topics for revision, ensuring a comprehensive and enduring understanding of
+               the material.
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <span style="font-size: 1.1em;">How does the adaptive learning system work?</span>
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body" style="font-size:1.1em;">
+            Our adaptive learning system utilizes machine learning algorithms to analyze your 
+            performance in assessments. It dynamically adjusts the difficulty of the content 
+            to match your current knowledge level, ensuring a personalized learning experience.
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <span style="font-size: 1.1em;">How are the learning paths structured?</span>
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body" style="font-size:1.1em;">
+            Learning paths are dynamically adjusted based on your performance. As you complete assessments, 
+            the system tailors the content to match your proficiency level. 
+            This ensures that you are appropriately challenged throughout your learning journey.
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+            <span style="font-size: 1.1em;">How can you make the most of this website? </span>
+          </button>
+        </h2>
+        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body" style="font-size: 1.1em;">
+            To maximize your experience on this website, complete the initial assessment, engage with 
+            personalized content, set achievable goals within adaptive deadlines, and actively participate 
+            in discussions for a well-rounded learning experience.
+          </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+            <span style="font-size: 1.1em;">What characterizes gamified, level-based learning on this platform? </span>
+          </button>
+        </h2>
+        <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body" style="font-size: 1.1em;">
+            Gamified learning employs a sequential, level-based approach. Users advance through levels by 
+            completing challenges and assessments, with engaging elements like rewards and achievements to 
+            enhance motivation and enjoyment.
+          </div>
+        </div>
+    </div>
+
+  </div>
+  </div> <!--col-6 ended-->
+
+  <div class="col-lg-3">    
+    <!-- <div style="padding:1em 0em;">
+    </div> -->
+    <div style="justify-content: center;">
+       <!-- we will se what comes here -->
+       <!-- <img style="width: 10em;" src="{% static 'photos/specks.png' %}" alt=""> -->
+       <img style="width: 10em;" src="{% static 'photos/question2.gif' %}" alt="robot">
+    </div>  
+  </div>
+</div> <!--row ended -->
+
+</div> <!--end of the outerdiv -->
+  <!-- enf of the faq section-->
+
+
+<!--Start of the second last section-->
+<div style="padding:1em 0em;"></div>
+<div class="row parallax-section" style="margin: 0%; justify-content: center; 
+background:linear-gradient(to bottom right, rgb(84, 84, 84),black); padding-top: 0em; padding-bottom: 10em;
+box-shadow: 0em -1em 2em rgba(0, 0, 0, 0.354);">
+    
+    <div class="col-lg-7" >
+        <div style="text-align: center; position: relative; top: 6em;"> 
+            <img style="width:13em; filter: drop-shadow(0em 1em 2em rgba(23, 22, 22, 0.394));" src="{% static 'photos/robo_smile_home.png' %}" alt="">
+        </div>
+        <div class="parallax-effect">
+            <h3 class="home-text-bottom" >
+                Transform your learning with AI assistance. <br>
+                  Start your journey today! 
+            </h3><br>     
+            <a href="{% url 'accounts:studentsignup' %}" class="signup-button">
+                <span style="color: white"> Sign Up</span> 
+            </a> 
+        </div>
+    </div>
+
+</div>
+<!--end of the last section-->
+
+
+
+
+
+
+
+
+
+<!-- javascript starts here -->
+<script>
+const cardc = document.querySelectorAll('.row.info-row');
+const cardw = document.getElementsByClassName('info-row')
+console.log(cardc) 
+
+cardc.forEach(entry =>{
+        console.log(entry)
+        })
+
+const options = {
+    root: null, // Use the viewport as the root
+    rootMargin: '-100px', // No margin around the root
+    threshold: 1 // Trigger when 50% of the element is visible
+  };
+
+const observer = new IntersectionObserver(enteries =>{
+    enteries.forEach(entry=>{
+        if (entry.isIntersecting) {
+            // console.log("hello this is entry" ,entry)
+            entry.target.classList.add('centered');
+            // Unobserve the target element to stop further callbacks
+            // observer.unobserve(entry.target);
+        } 
+        else{
+        }
+    }),{
+        threshold: 1
+    }
+})
+
+
+cardc.forEach(cardy =>{
+    observer.observe(cardy)
+})
+
+var cardn = document.querySelectorAll('.row.info-row1');
+cardn.forEach(cardy =>{
+    observer.observe(cardy)
+})
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+{% if user.is_authenticated and user.teacher.is_type == 'teacher' and user.teacher.is_verified == True %}
+    <h2> This is a teacher signed in and verified </h2>
+{% elif user.is_authenticated and user.teacher.is_type == 'teacher' and user.teacher.is_verified == False %}
+    <h2>This is a teacher signed in but not verified </h2>
+{% else %}
+    {% if user.is_authenticated and user.student.is_type == 'student' %}
+        <h2> This is a student signed in </h2>
+    {% elif user.is_authenticated == True and user.is_superuser %}
+        <h2>The admin is signed in</h2> 
+        {{user.student.is_type}}
+    {% else %}
+        <h2>You are not signed in </h2>
+    {% endif %}
+{% endif %}
+
+
+<div class="hello">
+        This is the html view to check if the project is working properly
+       </div>
+        <br>
+        <button id="clicker" class="btn btn-dark">
+            Click me
+        </button>
+        <br><br><div id="bye"></div>
+        
+    {{hello}} <br><br>
+    <form action="{% url 'djangocontent' %}">
+        <button class="btn btn-outline-secondary" onclick="myfunction()" type='submit' > click here to get data form django dynamically </button>
+        </form>
+    
+        <br> 
+        {{djangoboy}}
+        <hr>
+    
+        <br>
+        <form action="{% url 'djangoemail' %}">
+            <button  class="btn btn-outline-success" type='submit' > click here to send email </button>
+        </form>
+        <br>
+        {{email}}<hr><br>
+        <br> Email with attachment
+        <a href="{% url 'emailattachment' %}" class="btn btn-warning">
+            send email with attachment!
+        </a>
+        <br> {{attachment}}
+</div> 
+-->
+    
+ <script src="{% static 'js/boot/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/boot/popper.min.js' %}"></script>
+
+<script src="{% static 'accounts/js/index.js' %}"></script>
+
+{% endblock content %}
+    

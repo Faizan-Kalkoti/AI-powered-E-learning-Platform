@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- top row -->
+<div style="padding: 2em; margin: 0x; background-color: whitesmoke; text-align: center; box-shadow: 0em 1em 2em rgb(216, 214, 214);">
+   <h1 style="text-align: center;">YOUR RESULT</h1> 
+</div>
+<br><br><br>
+<!-- end of the top row -->
+
+
+
+<!-- Start of the main row (content) -->
+<div class="row" id="background-party"
+style=" margin: 0px; 
+justify-content: center; 
+background-repeat: no-repeat;
+background-size: cover;
+background-image: url({% static 'coursetests/photos/party_props.gif' %});">
+    <div class="col-lg-3">
+        <div style="text-align: right;">
+            <img style="width: 10em;" src="{% static 'coursetests/photos/result-party-1.png' %}" alt="">
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        {% if result == 'fail' %}
+             <div style="text-align:center;"> <img style="width: 25em;" src="{% static 'courses/photos/level_1.png' %}" alt="">
+             </div>
+             <br>
+             <div> <h3 style="text-align:center;">This Level is available to you!</h3></div><br>
+             
+        {% elif result == 'pass' %}
+        <div style="padding: 1em; opacity: 0; transition: 2s;" id="congrats">
+            <h3 style="text-align: center;">Congratulations!</h3>
+        </div>
+
+           <div class="row" id="party-content" style="text-align: center; margin: 0px; opacity: 0; transition: 3s;">
+               <div class="col-6" style="justify-content: center; align-items: center; display: flex; flex-direction: column;">
+                 <!-- <div style="text-align: center;"> -->
+                   <img style="width: 15em;" src="{% static 'courses/photos/level_1.png' %}" alt=""><br>
+                   <div id="first_box" style="font-size: 1.3em;">Level 1</div>
+                 </div>
+               <!-- </div> -->
+               <div class="col-6" style="justify-content: center; align-items: center; display: flex; flex-direction: column;">
+                 <!-- <div style="text-align: center;"> -->
+                    <img style="width: 15em;" src="{% static 'courses/photos/level_2.png' %}" alt=""><br>
+                  <div id="second_box" style="font-size: 1.3em;">Level 2</div>
+                <!-- </div> -->
+               </div>      
+            </div>
+
+             <br><br>
+             <div style="text-align: center;"> <h3>These Levels are made available to you!</h3> </div><br>
+             <br>
+             
+             <!--
+             <div style="background:linear-gradient(to bottom right, rgb(242, 242, 242), rgb(227, 227, 227)); padding: 1em; font-size: 1.5em; text-align: center;
+             border-radius: 1em;">
+                You score: {{score}} %
+                <div style="padding: 1em 1em;">  
+                    <a class="btn btn-dark" style="font-size: 1.1em;" href="{% url 'courses:singlecourse' slug=course.slug %}">
+                        Go to course
+                    </a>
+                </div>
+             </div> -->
+        {% endif %}
+
+        
+        <!-- Row section started -->
+        <div  style="background-color: whitesmoke; padding: 1em; font-size: 1.5em; 
+        border-radius:1em; margin:0px; box-shadow:  20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;" 
+        class="row resultcard">
+        <h3 style="padding-bottom: 0.5em;"> Your Result </h3>
+          <div class="col-lg-6">
+
+            <div style=" border-radius: 1em; display:flex; justify-content:center; align-items:center;
+            font-size:1em; font-weight: bold; flex-direction: column; flex-wrap: wrap; padding:0.5em;">
+            
+             <div style="padding:7em;"></div>
+              <div id="hiddenresultbox" style="background-image: url({% static 'coursetests/photos/result_bg.png'' %});">
+                You got: {{right}}/15 <br> 
+                Score: {{score}} % 
+                <br>
+                <button data-bs-toggle="modal" data-bs-target="#pretest-feedback"
+                style="margin-bottom:0.4em; margin-top: 0.3em;" class="btn btn-dark">See feedback</button><br>
+                <!-- <br><br> -->
+                {% comment %} {% endcomment %}
+               </div>
+
+            </div> 
+              
+          </div>
+          <div class="col-lg-6">
+            <!--Charts will come here -->
+            <canvas id="studentChart" width="50" height="50"></canvas> 
+          </div>
+        </div> 
+        <!-- row section done -->
+
+
+    </div>
+
+    <div class="col-lg-3">
+        <div style="text-align: left;">
+            <img style="width: 10em;" src="{% static 'coursetests/photos/result-party-2.png' %}" alt="">
+        </div>
+    </div> 
+</div>
+<!-- End of the main row  -->
+
+
+
+
+<!-- Modal start for feedback -->
+<!-- Modal start (To End Test) -->
+<div class="modal fade" id="pretest-feedback" data-bs-backdrop="static" style="padding: 1em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered" style="max-width:50em;">
+    <div class="modal-content">
+      <h1 class="fs-3" id="Modal_level_title" style="text-align: center; padding-top: 1em;">
+       Your Test Feedback</h1>
+      <hr>
+      <div class="" style="text-align: center; padding: 0em 2em;">
+        <!--modal body -->
+         <div style="font-size: 1.2em;">
+            <img style="width: 14em;" src="{% static 'coursetests/photos/robot_result.png' %}" alt="">
+               <div id="robot-speech" style="border: 1px solid grey; box-shadow: 5px 5px 5px grey; padding: 1em; 
+                    display: flex; flex-wrap: wrap; overflow: hidden; word-wrap: break-word; text-align:left;">
+                        Feedback Content
+              </div>
+         </div><br>
+      </div>
+
+      <div style="text-align: center; padding-bottom: 1em;" >
+      
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+        &nbsp;
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#set_deadline3">Set Deadline</button>
+         
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- Modal end -->
+<!-- Modal end for feedback -->
+
+
+{% include "tests/test_deadline.html" %}
+
+
+
+
+
+
+
+<br><br><br>
+<script src="{% static 'accounts/js/bootstrap.bundle.min.js' %}"></script>
+
+<script src="{% static 'courses/js/chart.js' %}"></script>
+<script>
+    setTimeout(function(){
+        var gety = document.getElementById('background-party');
+        gety.style.backgroundImage ="none";
+    }, 12000);
+
+    setTimeout(()=>{
+        gety_in = document.getElementById('party-content');
+        gety_in.style.opacity = 1;
+    }, 3000);
+
+    setTimeout(()=>{
+        cong = document.getElementById('congrats');
+        cong.style.opacity =1;
+    },2000);
+    
+
+    // Chart js for failed Students
+    // Charts js for passed students
+    // (1) - For [pie chart]-  chart.js
+    
+    let score01 = ({{right}}/15)*100;
+    let wrong01 = ((({{attempted}}-{{right}})/15)*100)-1;
+    let left01 = 100 - score01 - wrong01; 
+
+    const data_main = {
+    labels: ["Correct", "Wrong", "Not Attempted"],
+    datasets: [
+      {     
+        data: [score01, wrong01, left01], // You can adjust these values based on your data
+        backgroundColor: ["green", "red", "grey"], // Colors for each segment
+      },
+    ],
+  };
+
+  const ctx2 = document.getElementById("studentChart").getContext("2d");
+  
+  const options1 = {
+    title: {
+      display: true,
+      text: "Student Course Progress",
+      fontSize: 16,
+    },
+    responsive: true,
+  };
+  
+  const pieChart = new Chart(ctx2, {
+    type: "pie",
+    data: data_main,
+    options: options1,
+  });
+  //Ended here ....
+
+
+//For getting data for personalized feedback for the students
+document.getElementById('robot-speech').innerHTML=`{{feedback|safe}}`;
+
+
+// To get the message before the page is exited
+window.onbeforeunload = function() {
+  alert("Are you sure, You want to leave this page?")
+  window.location.href = "{% url 'coursetests:pretest' course_slug=course.slug %}";
+  return "Are you sure you want to leave this page?";
+};
+
+
+   
+</script>
+
+{% endblock %}

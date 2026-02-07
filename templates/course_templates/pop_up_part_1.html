@@ -1,0 +1,65 @@
+{% load static %}
+
+<!-- Modal Start -->
+<div class="modal fade" id="LevelSectionModal" data-bs-backdrop="static" style="padding: 1em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <h1 class="fs-3" id="Modal_level_title" style="text-align: center; padding-top: 1em;">
+        Easy Level Sections
+      </h1>
+      <hr>
+
+      <div class="modal-body" id="Modal_level_body">
+        I am within the modal
+      </div>
+
+      <div style="text-align: center; padding-bottom: 1em;" >
+        <hr>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- End of the modal for the course sections for each level -->
+
+
+
+
+<!-- Modals for starting of course to get the course options-->
+<!--Modal - 1 -->
+<div class="modal fade" id="confirm_course_modal" data-bs-backdrop="static" style="padding: 1em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <h1 class="fs-3" id="Modal_level_title" style="text-align: center; padding-top: 1em;">
+        Registration Successful!
+      </h1>
+      <hr>
+      <div class="modal-body" id="Modal_level_body" style="text-align: center;">
+        <!--modal body -->
+        <!-- <img style="width:8em;" src="{% static 'accounts/photos/correct.jpg' %}" alt="Congrats!"> -->
+          <div style="font-size: 1.2em;">
+            All the sections are initially locked! <br> 
+            To get started please select from one of the following options. 
+         </div><br>
+         <div style="padding-top: 0.4em;">
+           <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#set_deadline1" style="margin: 0.2em;"> 
+            &nbsp &nbsp No knowledge (beginner) &nbsp &nbsp</button> <br>
+           <a class="btn btn-outline-dark" href="{% url 'coursetests:pretestoption' course_slug=course.slug %}"
+            style="margin: 0.2em;">Some knowledge (experienced)</a>
+         </div>
+      </div>
+      <div style="text-align: center; padding-bottom: 1em;" >
+        <hr>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of modal - 1-->

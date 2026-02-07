@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- THis is a page for pre-requisite tests -->
+<div class="outermain">
+    
+<div style="padding:2em; background-color:whitesmoke;">
+        <h1 style="text-align: center;">Pre-Requisite Test</h1>
+</div>
+
+
+<!--Modal - 1 -->
+<div class="modal fade" id="confirm_course_modalx" data-bs-backdrop="static" style="padding: 1em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <h1 class="fs-3" id="Modal_level_title" style="text-align: center; padding-top: 1em;">
+        Give the test now?</h1>
+      <hr>
+      <div class="modal-body" id="Modal_level_body" style="text-align: center;">
+        <!--modal body -->
+         <div style="font-size: 1.1em; text-align:justify; justify:space-evenly; padding:0.5em 1em;">
+            This test will have 15 to 20 questions from 
+            Easy and Medium levels (More from the Easy side) to check if you know 
+            the basics and some intermediate level knowledge.
+            <br> <br>
+            All the questions that are attempted wrong will be analyzed and a 
+            feedback will be generated to help you revise those topics.
+            Approprate sections will also be recommended for you to clear those concepts.
+            <br><br>
+            <div style="text-align:center;">
+                [Test Duration: 15 minutes]
+            </div>
+         </div><br>
+
+         <div style="padding-top: 0.4em;"> <!-- href="" -->
+           <button class="btn btn-success" onclick="gototest()" 
+            style="margin: 0.2em;">Start the test</button>
+         </div>
+      </div>
+      <div style="text-align: center; padding-bottom: 1em;" >
+        <hr>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of modal - 1-->
+
+
+<div class="row" style="margin: 0px; padding: 1em 0em; text-align: center; justify-content: center;">
+        <img style="width: 40vw;" src="{% static 'coursetests/photos/online-exam_2.gif' %}" alt="">
+</div>
+
+<div class="row" style="text-align: center; justify-content: center; margin-bottom:2em;">
+    <div class="pre-test-options-text">
+        <div style="padding: 0.5em 0em;"><span> 
+        <b> Note: You can give it only once. This test is just to determine how much you know. </b> 
+       </span></div>
+        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confirm_course_modalx">
+             Do you wish to proceed for the pre-requisite test?
+        </button>
+        <br> <br>
+        <a class="btn btn-danger" href="{% url 'courses:singlecourse' slug=course.slug %}">Go back</a>
+    </div>
+</div>
+
+</div> 
+<!--outerdiv end-->
+    
+
+
+
+  <script src="{% static 'accounts/js/bootstrap.bundle.min.js' %}"></script>
+
+
+<!-- this is the Javascript section of the test -->
+<script>
+  function gototest(){
+    window.open("{% url 'coursetests:pretest' course_slug=course.slug %}", '_blank');
+  }
+</script>
+{% endblock %}

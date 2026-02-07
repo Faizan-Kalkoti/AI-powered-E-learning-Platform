@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="row" style="margin: 0%; padding:1.3em; 
+background: linear-gradient(to top right, #141E30,#28416F); box-shadow: 0em 2em 2em rgb(234, 233, 233)">
+<div style="color: white; font-size: 1em; text-align: center;">
+   <h1> {{course.course_name}} Course </h1>
+</div>
+</div>
+
+<div class="row" style="margin: 0%; justify-content: center; padding: 4em 1em;">
+    <div class="col-lg-6" style="background-color: whitesmoke; border-radius: 1em;">
+        <!-- {{user.teacher.name}} -->
+
+        {% if user.teacher.name == course.made_by_teacher.name %}
+
+        <!-- outer div starts here -->
+        <div style="padding:2em;">
+            <h2 style="text-align: center;">
+                Choose a section to create the questions for this course.
+            </h2>
+            <br>
+              <div style="text-align: center;">
+               <img style="width: 16em;" src="{% static 'courses/photos/test_go-r.png' %}" alt=""> 
+              </div>
+            <br>
+           
+
+            <form action="{% url 'coursetests:createtest2' course_slug=course.slug %}" method="post">
+                {% csrf_token %}
+                <select name="selected_section" class="form-select" aria-label="Default select example">
+                    <!-- <option value="none" selected>Select Section</option> -->
+                    {% for section in course.contains_sections.all %}
+                    <option value="{{section.slug}}">{{section}} - {{section.Difficulty}}</option>
+                    {% endfor %}
+                  </select>
+                  <br>
+              <div style="text-align: center;">
+                <input class="btn btn-primary" type="submit" value="Next">
+                &nbsp;
+                <a class="btn btn-dark" style="color: white;" onclick="goBack()">Cancel</a>
+              </div>
+            </form>
+
+        </div>
+        <!-- outer div ends here -->
+
+        {% else %}
+        <div>
+            <h2> You are not authorized to Be here!</h2>
+        </div>   
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- Java Scirpt here -->
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+{% endblock %}

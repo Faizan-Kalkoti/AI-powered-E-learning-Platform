@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div style="padding:2em;"> 
+    <div style="padding:1em;">
+        <h3 style="text-align:center;"> Not enough Questions for this course! </h3>
+    </div>
+    <div style="text-align:center;">
+        <img style="height: 50vh;" src="{% static 'courses/photos/robot_sad.png' %}" alt="">
+    </div>
+    <br>
+    <div style="padding:1em; text-align:center;">
+        <a class="btn btn-dark" href="{% url 'courses:singlecourse' slug=course.slug %}"> Go Back </a>
+    </div>
+</div>
+
+{% endblock %}

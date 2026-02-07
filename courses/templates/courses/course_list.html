@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div style="padding: 0em 0em;">
+<div style="padding: 2em 1em; background: linear-gradient(to right, #4c527b, #97b0e1);  
+text-align:center; box-shadow:0em 0.5em 1.4em rgb(220,220,220); "> <!-- rgb(78,61,167), rgb(219,115,176) -->
+
+  <!-- <h5> Find the course </h5> -->
+  <form name="searchform" id="searchform" method="GET">
+    <div class="column" style="justify-items:center;">
+     {% comment %} {% csrf_token %} {% endcomment %}
+    <input type="textfield" name='name' placeholder=" Search course" style="padding: 0.3em 1em; padding-right: 6em;
+    border-radius:5px; margin-bottom:0px;">
+    <input type="submit" value="Search" class="btn btn-dark" style="padding:0.36em 2em; margin:0px 1px; transform: translate(0px,-2px)">
+    </div>
+  </form>
+  
+</div>
+</div>
+
+
+<div style="padding:4em 2em; margin:0px;" class="row">
+{% for course in object_list %}
+
+<div class="col-lg-3" style="margin-bottom: 2em;">
+<div class="card course-card" style="">
+<a href="{% url 'courses:singlecourse' slug=course.slug %}" alt="single-course"
+ style="text-decoration:none; color: black; ">
+    {% if course.course_img %}
+      <img src="{{course.course_img.url}}" style="width: 18rem; height:10em;" 
+           class="card-img-top course-img" alt="coures image">
+    {% else %}
+       <img src="{% static 'courses/photos/deadline_robot.png' %}" style="width: 18rem; height:10em;" 
+            class="card-img-top course-img" alt="coures image">
+    {% endif %}
+    <div class="card-body" style="margin-top: 0px; padding: 15px; border-top: 1px solid lightgrey;">
+      <p class="card-text" style="">
+        <h5>{{course.course_name}}</h5>
+        by {{course.made_by_teacher.name}}
+    <br> at {{course.date_generated|date:"l, F j, Y"}}</p>
+        
+    </div>
+</a>
+  </div>
+</div> <!--end of a card column-->
+{% endfor %}
+
+</div> <!-- end of the row -->
+
+<!-- For pagination of the courses -->
+<div class="row" style="background: linear-gradient(to bottom left, #5b5b5b,#1e1e1ee6); margin:0px; bottom:0px; 
+padding: 1em; justify-content: center; box-shadow: 0em -1em 2em rgb(202, 202, 202);">
+
+  <div class="col-lg-6" style="text-align: center;">
+    
+    {% if page_obj.has_previous %}
+    <span style=" padding: 0.5em 0.5em; color:white;">
+    <a href="?page=1" style="text-decoration: none; color:white;"> first </a> </span>
+    <span style=" padding: 0.5em 0.5em; color:white;">
+    <a style="text-decoration: none; color:white;"
+    href="?page={{page_obj.previous_page_number}}"> << </a>
+    </span>
+    {% endif%}
+
+    <span style="color:white; padding: 0.5em 1em;">  {{page_obj.number}} </span>
+    
+    {% if page_obj.has_next %}
+   <span style=" padding: 0.5em 0.5em; color:white;">
+    <a style="text-decoration: none; color:white;" href="?page={{page_obj.next_page_number}}"> >> </a> </span>
+    <span style=" padding: 0.5em 0.5em;">
+    <a style="text-decoration: none; color:white;" href="?page={{page_obj.paginator.num_pages}}"> last</a>
+   </span>
+    {% endif %}
+ 
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,128 @@
+{% load static %}
+
+
+
+<!--Modal - This is going to be included in course_detail for pop-up -->
+<div class="modal fade" id="set_deadline1" data-bs-backdrop="static" style="padding: 1em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <h1 class="fs-3" id="Modal_level_title" style="text-align: center; padding-top: 1em;">
+        You have Started the course!
+      </h1>
+      <hr>
+      <div class="modal-body" id="Modal_level_body" style="text-align: center;">
+        <!--modal body -->
+          
+        <div style="font-size: 1.3em; text-align:center; font-weight: 500;">
+        The Easy Level will be unlocked for you!
+        <br> 
+        <img style=" max-width:15em;" src="{% static 'courses/photos/deadline.jpg' %}" alt="">
+           <div style="text-align: justify; justify-content: space-evenly; padding: 0.5em; 
+           font-size: 0.9em; font-weight: 400;">
+            Please "SET" a deadline for this course. Doing so will help us
+            ensure that you stay on track and complete the course within the anticipated timeframe.
+           </div>
+         </div><br>
+
+         <div style="padding-top: 0.2em;">
+           <button class="btn btn-primary" style="margin: 0.2em;" data-bs-toggle="modal" data-bs-target="#set_deadline2">
+             &nbsp &nbsp Continue &nbsp &nbsp</button> <br>
+         </div>
+      </div>
+      <div style="text-align: center; padding-bottom: 1em;" >
+        <hr>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of modal - 1-->
+
+
+<!--Modal - this is where you set the date for the course end -->
+<div class="modal fade" id="set_deadline2" data-bs-backdrop="static" style="padding: 1em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="Modal_level_body" style="text-align: center;">
+        <!--modal body -->
+          
+        <div style="font-size: 1.3em; text-align:center; font-weight: 500; padding: 0em 1em;">
+          <br> 
+          <img id="robo-img" style="max-width:13em;" src="{% static 'courses/photos/deadline_robot.png' %}">
+          <div>
+            Please set the expected date for completing this course
+          </div>
+
+         <!-- form for submitting the deadline --> 
+         <form id="setscheduleform" style="padding:1em;" action="{% url 'progress:setdeadline' slug=course.slug %}" method="POST" onsubmit="return validateDate()">
+           <input id="inputDate" name="inputDate" class="form-control form-control-lg" placeholder="Input date" type="date">
+           <br>
+           {% csrf_token %}
+           <button class="btn btn-dark" type="submit">Submit </button> 
+         </form><br>
+         
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of modal - 2-->
+
+
+<!-- Modal (3) - this is where we enter the passcode for the course joining -->
+<div class="modal fade" id="join_course" data-bs-backdrop="static" style="padding: 1em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="Modal_level_body" style="text-align: center;">
+        <!--modal body -->
+          
+        <div style="font-size: 1.3em; text-align:center; font-weight: 500; padding: 0em 1em;">
+          <br> 
+          <img id="robo-img" style="max-width:13em;" src="{% static 'courses/photos/deadline_robot.png' %}">
+          <div>
+            Please Enter the password for Taking the course!
+          </div>
+
+         <!-- form for submitting the deadline --> 
+         <form id="joincourseform" style="padding:1em;" action="{% url 'courses:joincourse' slug=course.slug %}" method="POST" >
+           <input id="inputPassword" name="course-password" class="form-control form-control-lg" placeholder="Input password" type="password">
+           <br>
+           {% csrf_token %}
+           <button class="btn btn-dark" type="submit">Submit </button> 
+         </form><br>
+         
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of modal - 3 -->
+
+
+
+
+<script>
+  function validateDate() {
+      var inputDate = document.getElementById("inputDate").value;
+      var currentDate = new Date().toISOString().slice(0, 10);
+  
+      if (inputDate <= currentDate) {
+          alert("Please enter a date greater than the current date.");
+          return false;  // Prevent form submission
+      }
+      return true;  // Allow form submission
+  }
+  </script>
+
+

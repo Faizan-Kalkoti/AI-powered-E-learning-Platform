@@ -1,0 +1,437 @@
+{% load static %}
+{% load custom_filters %}
+<!--  -->
+<div style="padding: 0em 1em; padding-top:0.1em;">
+  {% if not coursecompleted %}
+  <h3 style="text-align:center;">[ {{current_level}} Level ]</h3>
+  {% else %}
+  <h3 style="text-align:center;">[ Course Completed ]</h3>
+  {% endif %}
+</div>
+<br>
+<hr><br>
+<!--  -->
+
+
+
+
+<!-- Top part of the right section-->
+<div style="text-align: center; display: block;">
+  <div id="hello-robot" style="padding: 0em; position: absolute; width: 95%; justify-content: center; transform: translateY(-2em); text-align: center; 
+  text-align: center;">
+      <img style="width: 13.5em; filter: drop-shadow(0em 2em 1em rgb(40, 38, 38));" 
+      src="{% static 'accounts/photos/robot_student_dashboard.png' %}" alt="">
+    </div>
+</div>
+
+
+<div style="padding: 2em 0em;"></div>
+<div style=" padding:1em 2em; padding-top:2em; background:linear-gradient(to bottom right, rgb(109, 109, 109), rgb(39, 39, 39));  border-radius: 1em;
+color: white; margin: 1em 1em; text-align: center; border: 3px solid rgb(148, 148, 148);">
+  {% if not coursecompleted %}
+     {% if pred_deadline %}
+     <h4> Estimated Completion Date: 
+     <span style="font-weight: bold;">{{pred_deadline.deadline}}</span></h4>
+     {% else %}
+     <h4>Estimated Deadline: Not enough data </h4>
+     {% endif %}
+  {% else %}
+  <h4>
+    Your Course Completion time:
+    <span style="font-weight: bold;">{{timetocomplete}} Days</span>
+  </h4>
+  {% endif %}
+</div>
+<!-- end of the top part of the right section -->
+
+
+<!-- row for Course Progress-->
+<div class="row" style="padding:0em 0em;  margin:0px; padding-bottom:1em;">
+  <div class="col-lg-5" style="padding:2em 1em; border:1px solid grey; border-radius: 1em; margin:10px;">
+       <h5>Your Course Progress: <b> {{module_completion_percentage}}% </b> </h5>
+       <h6>Completed modules: {{modulesdone}}/{{totalmodules}}</h6> <br>
+       <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="{{module_completion_percentage}}" 
+        aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar bg-success" style="width: {{module_completion_percentage}}%"></div>
+       </div>
+  </div>
+
+  <div class="col-lg-6" style="padding:2em 1em; border:1px solid grey; border-radius: 1em; margin:10px;">
+   
+  {% if not coursecompleted %}
+      {% if deadline %}
+         {% if remaining_days <= 0 %}
+         <h5>Time Exceeded by: <em style="color:red;">  {{remaining_days|abs}}</em> days</h5>
+         {% else %}
+         <h5>Time remaining: <em style="color:red;"> {{remaining_days}} </em> of {{total_days}} Days</h5>
+         {% endif %}
+         <h6>Deadline: {{ deadline.deadline|date:"jS F, Y" }}</h6>
+      {% else %}
+        <h5>Please start the course</h5>
+        <h6 style="color: red;">No Deadline set yet </h6>
+      {% endif %}
+    <br>
+    <div class="progress" role="progressbar" aria-label="Danger example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+      {% if deadline %}
+         <div class="progress-bar bg-danger" style="width: {{deadline_percentage}}%"></div>
+      {% else %}
+         <div class="progress-bar bg-danger" style="width: 50%"></div>
+      {% endif %}
+    </div>
+
+  {% else %}
+
+  <div class="row" style="font-size: 1.2em; font-weight: 600;">
+    <div class="col-lg-7" 
+    style="display: flex; flex-direction: column; text-align: left; align-items: center; justify-content: center;
+    border-right: 2px solid #95B8D1;">
+      <div>
+        Course completed on: <span style="font-style: italic; color: #29628b;">
+          {{coursedatecompleted}}
+        </span> 
+      </div>
+    </div>
+
+    <div class="col-lg-5" style="text-align: left; ">
+      <img style="max-width: 5em;" src="{% static 'courses/photos/hour_glass_img.png' %}" alt="">
+    </div>
+  </div>
+
+  {% endif %}
+
+  </div>
+</div>
+<!-- this row ended -->
+
+
+
+<!-- Guauge Chart will come here -->
+<div class="row" style="padding:0em 0.6em; padding-right:1.3em; padding-bottom:0.6em;">
+  <div class="col-lg-8">
+   <div style="text-align:center; padding:1em; border:1px solid grey; border-radius:1em;">
+    {% include "course_templates/gauge.html" %} <br>
+   </div>
+  </div>
+
+  <div class="col-lg-4">
+    <br>
+    <div style="padding:0.4em 0.5em; border-radius:1em; background:linear-gradient(to bottom right,rgb(135, 132, 132), rgb(65, 63, 63));">
+    <h4 style="text-align:left; color:white; text-shadow: 5px 0px 0.5em black; padding: 0.1em 0em; padding-left: 0.8em;">Your Learning Speed</h4></div>
+    <br>
+    <img style="width:10em; filter: drop-shadow(0em 2em 2em rgb(193, 231, 232));" src="{% static 'accounts/photos/robot_dash.png' %}" > 
+  </div>
+</div>
+<!--Gauge Chart has ended here -->
+
+
+
+<!-- if user is student and has taken the course -->
+<div style="padding: 1em 0.6em; padding-right: 1.6em;">
+<!--Row starts here -->
+<!-- <div class="row" style="margin: 0px; padding: 0.5em; border: 1px solid grey; border-radius: 1em;">
+  <div class="col-lg-7" style="padding: 1.5em 1em; margin:0em 0.5em;">
+    <h5>
+       Current Avg. Speed: <span style="color: blue;">15</span> mpd
+    </h5>
+    <h5>
+       Recommended Speed: <span style="color: red;">20</span> mpd
+    </h5>
+    <hr>
+    <h5 >Status: <span style="color: brown;">  [Falling behind schedule] </span></h5>
+    <h5>By:  <span style="color: blueviolet; font-weight: bold;">100 </span> modules</h5>
+      
+  </div>
+
+  <div class="col-lg-4" style="padding: 1em; text-align: center; 
+  border-left: 1px solid grey; margin: 0em 0.5em;">
+    <img style="width: 10em;" src="{% static 'courses/photos/hour_glass_img.png' %}" alt="">
+  </div>
+</div> -->
+<!-- row ends here -->
+</div>
+
+
+
+
+<!-- Start of the Revision section - (new) -->
+
+<div class="row" style="margin: 0px; padding: 0em 1em;">
+  <div class="col-lg-5" style="text-align: center;">
+    <br>
+    <img style="width: 8em;  filter: drop-shadow(0em 3em 3em rgb(168, 211, 216));" 
+    src="{% static 'courses/photos/robot_tilted.png' %}" alt="">
+  </div>
+
+  <div class="col-lg-7">
+    <br>
+    <div class="row" style="margin:0px;">
+      <div class="col-lg-12">
+        <div style="padding-top: 1em; padding-bottom:0.5em; border:1px solid black; border-radius:10px; text-align:center; cursor:pointer;"
+        class="course-feedback-btn" data-bs-toggle="modal" data-bs-target="#RevisionModal">
+          <h5> Your Revision Section</h5>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row" style="margin:0px;">
+      <div class="col-lg-12">
+        <div style="padding-top: 1em; padding-bottom:0.5em; border:1px solid black; border-radius:10px; text-align:center; cursor:pointer;"
+        class="revision-btn" data-bs-toggle="modal" data-bs-target="#FeedbackModal">
+          <h5> Your Feedback </h5>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row" style="margin:0px;">
+      <div class="col-lg-12">
+        <div style="padding-top: 1em; padding-bottom:0.5em; border:1px solid black; border-radius:10px; text-align:center; cursor:pointer;"
+        class="course-test-btn" data-bs-toggle="modal" data-bs-target="#TestModal">
+          <h5> Your Course tests </h5>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+<br>
+
+<!-- End of the Revision section-->
+
+
+<!-- Modal of revision sections starts here --> 
+
+  <div class="modal fade" id="RevisionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body">
+           <h3 style="text-align:center;"> Revision Sections </h3> <br>
+
+           <div class="outer-revision" style="padding: 0.2em 3em;">
+            <div style="padding: 0.3em; border: 1px solid rgb(113, 103, 103); background-color: rgb(223, 178, 161);
+                        border-radius: 1em;">
+                 <div style="text-align: center; font-size: 1.3em;">Date: {{revisionsection.revision_date}}</div>
+            </div>
+           </div> 
+
+           <div style="text-align: center;">
+            <img style="width: 12em;" src="{% static 'courses/photos/revision_robot.png' %}" alt="robot">
+           </div>          
+
+
+          {% if revisionsection %}
+            
+           <a data-bs-toggle="collapse" href="#revisionsection{{ forloop.counter }}" class="accordion-button"
+           aria-expanded="false" aria-controls="revisionsection{{ forloop.counter }}" style="color:black; 
+           text-decoration:none; background-color: lightblue; padding: 1em 1em; 
+           border:1px solid black; display: flex; justify-content:space-between; 
+           align-items: center;"> 
+
+           <div>
+             <span style="padding: 1em 0em 0em 1em;">
+                {{ revisionsection.section }}
+             </span> 
+           </div>
+           </a>
+       
+           <div class="collapse" id="revisionsection{{ forloop.counter }}" style="padding: 0em 1em;">
+            {% for module in revisionsection.section.has_modules.all %} 
+             <!-- modules loop started -->
+             <div class="card card-body" style="border: 1px solid grey;">
+               <a style="color: black; text-decoration: none; padding:0em 0.5em;" 
+                  href="{% url 'modules:detailmodule' course_slug=course.slug section_slug=revisionsection.section.slug slug=module.slug %}"> 
+                   {{forloop.counter}}. - {{module}} 
+                  
+            <!-- to check if section completed -->
+            {% for moduly in module_completed %}
+            {% if moduly.complete_module == module %}
+              <span style="text-align:right; color:red; padding-left:1em;">
+                 <img style="width:1.3em;" src="{% static 'courses/photos/tick_96.png' %}">  
+              </span>
+            {% endif %}
+            {% endfor %}
+            <!-- end of the completed modules-->
+                  </a>
+                   
+             </div>
+            {% endfor %} 
+           </div>
+           <!-- Accordian ended -->
+
+           <br>
+           
+          
+          {% else %}
+              <div style="background-color: rgb(200, 179, 179); padding:1em; border:1px solid black;
+              border-radius:1em;">
+                <div style="text-align:center; padding:0.3em; font-size: 1.2em;">No revision section</div>
+              </div>
+          {% endif %}
+
+          <div style="text-align:center;"><br>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+<!-- end of the sections in recommended -->
+<!-- end of the revision section condition -->
+
+
+
+
+<!--start of the test section below revision section -->
+<div class="modal fade" id="TestModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <h3 style="text-align:center;"> Course Tests </h3> <br>
+
+        <div>
+         <div style=""> 
+
+          {% if not coursecompleted %}
+          <div style="padding:1em;"></div>
+
+          {% if periodic_tests_available %}
+              <a href="{% url 'alltests:pretestpage' course_slug=course.slug test_slug='periodic_test' %}" style="text-decoration: none;">
+                <div class="next-level-btn" style="border: 1px solid black; padding:0.5em 1.3em; border-radius: 1em;
+                    background:linear-gradient(to right, #9F879F, #F9BFDA); text-decoration: none; color: black; font-siz:1.3em;
+                    text-align:center; font-weight:600; color:whitesmoke; text-shadow: 2px 2px 2px #5c2c5c;">
+                        Give Your Periodic tests for this week  &nbsp;
+                        <img style="width: 1.5em;" src="{% static 'courses/photos/reminder.png' %}" alt="">
+                </div>
+              </a> <!-- 2 -->
+              <br>
+           {% endif %}
+          
+           <a href="{% url 'alltests:pretestpage' course_slug=course.slug test_slug='levelup' %}" style="text-decoration: none;">
+             <div class="next-level-btn" style="border: 1px solid black; padding:0.5em 1.3em; border-radius: 1em;
+               background:linear-gradient(to right, #95B8D1,#B8E0D2); color: black;">
+                 1. Give test to unlock the next Level
+              </div>
+           </a> <!-- 1 -->
+
+           <br>
+
+           <a href="{% url 'alltests:pretestpage' course_slug=course.slug test_slug='coursecompleted' %}" style="text-decoration: none;">
+            <div class="next-level-btn" style="border: 1px solid black; padding:0.5em 1.3em; border-radius: 1em;
+              background-color: lavender; text-decoration: none; color: black;">
+                2. Give test to Complete the course 
+            </div>
+           </a> <!-- 2 -->
+           <br>
+
+
+           {% else %}
+
+           <div style="padding:0em 1em;">
+            <div style="font-size:1.2em;">
+               <div style="border:1px solid black; border-radius:0.5em; padding:1em; text-align:center;">
+                Congratulations! You have completed your course
+                on {{coursedatecompleted}}
+               </div> 
+            </div>
+          </div>
+
+            <div style="padding:0em 0.2em; text-align:center;">
+              <img style="max-width:12em;" src="{% static 'courses/photos/robot_dancing.gif' %}">
+           </div>
+           {% endif %}
+
+           <div style="padding:0em 1em;">
+           <a href="{% url 'alltests:showallresults' course_slug=course.slug %}" style="text-decoration:none; color:black;">
+           <div class="next-level-btn" style="text-align:center; background:lightblue; padding:0.5em; border:2px solid grey; font-size:1.1em;">
+            See Past Test Results!
+           </div> </a><!-- 3 -->
+          </div>
+
+         </div>
+        </div>
+
+        <div style="text-align:center;"><br>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--Modal for tests end here -->
+
+
+
+
+<!-- Modal for Feedback starts here -->
+<div class="modal fade" id="FeedbackModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:60em;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+         <h3 style="text-align:center;"> Your Feedback </h3> 
+         <div style="text-align:center; justify-content:center;">
+
+          <div class="row" style="padding:0.5em 0em;">
+             <div class="col-lg-3">
+             </div>
+             <div class="col-lg-6" style="text-align:Center; font-size:1.2em; padding:0.3em 0em; 
+              border: 1px solid grey; border-radius:1em; color:white; background-color:rgb(69, 80, 72)">
+               {% if feedbackobj %}
+                 Latest Feedback Date : {{feedbackobj.feedback_date}}
+               {% else %}
+               {% endif %}
+             </div>
+             <div class="col-lg-3">
+             </div>
+          </div>
+          
+          <img style="width:12em;" src="{% static 'courses/photos/robot_feedback_img.png' %}" alt="">
+         </div>
+
+         <div style="padding:0em 1em;">
+          <div style="padding:0em 1em 1em; border:1px solid black; border-radius:1em;
+            display: flex; justify-content:space-between; align-items: center;">
+            <span style="padding: 1em 0em 0em 1em; font-size:1.1em;" id="Feedback-content">
+
+              {% if feedbackobj %}
+                  {{feedbackcontent|safe}}
+              {% else %}
+                  Your feedback will come here....  
+              {% endif %} 
+              </span>
+          </div>
+        </div>
+
+        <div style="text-align:center;"><br>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Modal for feedback ends here -->
+
+<script>
+
+  
+</script>

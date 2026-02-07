@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<br>
+<div class="row" style="justify-content:center;" >
+    <div class="col-lg-6">
+        <div style="padding:2em; text-align:center;">
+            <!-- your content will come here -->
+            <h3 style="text-align:center;">An Error Occured!</h3><hr>
+            <h4>You are not authorized to see this page!</h4>
+            <h4 style="text-align:center;">{{reason}}</h4>
+            <br>
+            <div style="text-align:center; padding:1em;">
+                <img style="height: 50vh;" src="{% static 'courses/photos/robot_sad.png' %}" alt="">
+            </div>
+            <br>
+            <div style="padding:1em; text-align:center;">
+                <a class="btn btn-dark" href="{% url 'courses:allcourseslist' %}"> Go Back </a>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+{%  endblock %}

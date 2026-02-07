@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="row" style="margin: 0%; padding:1.3em; 
+background: linear-gradient(to top right, #141E30,#28416F); box-shadow: 0em 2em 2em rgb(234, 233, 233)">
+  <div style="color: white; font-size: 1em; text-align: center;">
+     <h1> {{course.course_name}} Course </h1>
+     <h3>Set Questions for Section: {{section}} - {{section.Difficulty}} Level</h3>
+  </div>
+</div>
+
+<br><br>
+
+
+{% if user.is_authenticated and user.teacher %}
+    {% if user.teacher.name == course.made_by_teacher.name %}
+<div class="row" style="margin: 0%; padding: 2em; justify-content: center;">
+  <div class="col-lg-8">
+
+    <!--List questions-->
+    <div style="background-color: whitesmoke; padding: 2em;">
+      <h3 style="text-align: center;">List Questions</h3>
+      <hr><br>
+      <div id="ListQuestion"> </div>
+    </div>
+    <!--List questions ended -->
+    <br><br>
+
+    <!-- Question outer div started -->
+    <div id="AddQuestionSection" style="background-color: whitesmoke; padding: 2em;
+    display: none; transition: 1s;">
+       <div style="text-align: center;"><h4> Add Question </h4> </div>
+        <hr>
+        <form id="question_form_id">
+             <div class="mb-3"><!-- Question field 1-->
+              <label for="question_field_1" class="form-label">Enter your question</label>
+              <textarea class="form-control" id="question_field_1" rows="3"></textarea>
+             </div>
+  
+            <div class="mb-3"><!-- Question field 2-->
+              <label for="option_a" class="form-label">Enter Option A</label>
+              <input class="form-control" type="text" placeholder="Enter option A" id="option_a">
+            </div>
+  
+            <div class="mb-3"><!-- Question field 3-->
+              <label for="option_b" class="form-label">Enter Option B</label>
+              <input class="form-control" type="text" placeholder="Enter option B" id="option_b">
+            </div>
+  
+            <div class="mb-3"><!-- Question field 4-->
+              <label for="option_c" class="form-label">Enter Option C</label>
+              <input class="form-control" type="text" placeholder="Enter option C" id="option_c">
+            </div>
+  
+            <div class="mb-3"><!-- Question field 5-->
+              <label for="option_d" class="form-label">Enter Option D</label>
+              <input class="form-control" type="text" placeholder="Enter option D" id="option_d">
+            </div>
+  
+          <!-- Question field 6-->
+          <div class="row" style="display: flex; justify-content: center; margin: 0px;">
+            <div class="row" style="padding: 0.1em 0em; width: 20em; text-align: center;" >
+             <label for="answer"> Select The correct answer</label>
+             <select id="answer" name="answer" class="form-select" aria-label="Default select example">
+                <option value="">Default</option>
+                <option value="A">Option A</option>
+                <option value="B">Option B</option>
+                <option value="C">Option C</option>
+                <option value="D">Option D</option>
+             </select>
+            </div>
+            <!--Question field 6 ended-->
+            
+             <div style="text-align: center; padding: 1em;"> <!--buttons sections-->
+              <input class="btn btn-success" type="submit" style="width:8em;" value="Save">
+              &nbsp; &nbsp;
+              <button onclick="cancelQuestion()" class="btn btn-dark" style="width: 8em;">
+                Cancel
+              </button>
+             </div>
+          </div>     
+      </form>
+      <!--question form ended-->
+      </div> 
+    <!-- question outer div completed -->
+
+    <br>
+    <!--bottom options section start-->
+    <div style="text-align: center;">
+      <a class="btn btn-danger" style="color: white;" onclick="goback()"> Cancel and Go back</a>
+        &nbsp;
+        <button class="btn btn-primary" onclick="SubmitQuestions()">Submit Questions</button>
+        &nbsp; 
+        <button class="btn btn-dark" id="showQuestionbtn"> Add Questions + </button>
+    </div>
+    <!-- bottom options section end -->
+
+   </div>
+</div>
+
+   {% endif %}
+   {% else %}
+   <h2> you are not authorized! </h2>
+{% endif %}
+
+
+
+
+
+
+
+
+
+<!--start of the script-->
+<script>
+    // array to store data
+    var arr =[]
+
+    // Function to show question form
+    const showquestionbtn = document.getElementById('showQuestionbtn')
+    showquestionbtn.addEventListener('click', function(){
+      let addquestion = document.getElementById('AddQuestionSection');
+      addquestion.style.transition="1s";
+      addquestion.style.display="block";
+    });
+
+    // Function to hide the form
+    function cancelQuestion(){
+      let addquestion = document.getElementById('AddQuestionSection');
+      addquestion.style.display="none";
+    }
+
+    // Form listener function
+    const form_id = document.getElementById('question_form_id');
+    form_id.addEventListener('submit', function(event){
+          event.preventDefault();
+             var question = document.getElementById('question_field_1');
+              var a = document.getElementById('option_a');
+              var b = document.getElementById('option_b');
+              var c = document.getElementById('option_c');
+              var d = document.getElementById('option_d');
+              var ans = document.getElementById('answer');
+
+              // check if the value is not null 
+              if (question.value ==="" || a.value ==="" || b.value ==="" || c.value ==="" || d.value ==="" || ans.value ==="") {
+                alert("Please fill in all fields");
+                return; 
+              }
+
+              // Create an object for the question
+              var questionData = {
+              question: question.value,
+              optionA: a.value,
+              optionB: b.value,
+              optionC: c.value,
+              optionD: d.value,
+              correctAns: ans.value};
+
+              //  Push object values into the array
+              arr.push(questionData)
+              console.log(arr);
+
+              // Set the fields to null
+              question.value ="";
+              a.value = "";
+              b.value ="";
+              c.value ="";
+              d.value ="";
+              ans.value ="";
+
+             let addquestion = document.getElementById('AddQuestionSection');
+             addquestion.style.display="none";
+
+             showquestions();
+    });
+
+   // Cancel main button
+   function goback(){
+          window.history.back();
+   }
+
+  //  To show the questions
+   function showquestions(){
+      var str ='';
+      arr.forEach((element, index) => {
+        str = str +` 
+          <div style="padding:1em; font-size: 1.2em; background-color:rgb(217, 239, 252); border-radius:4px;">
+          <span style="border-bottom:1px solid black;"> <b> Question ${index + 1} </b></span> <br>
+          Question is: ${element.question} <br>
+          Option A:<em> ${element.optionA} </em> <br>
+          Option B:<em> ${element.optionB} </em> <br>
+          Option C:<em> ${element.optionC} </em> <br>
+          Option D:<em> ${element.optionD} </em> <br>
+          <span style="color:red;"> Answer is: </span>Option ${element.correctAns} <br>
+          </div><br><br>`;
+      });
+
+      var question_list = document.getElementById('ListQuestion');
+      question_list.innerHTML=str;
+   }//End of this function
+
+   // Function to submit data to backend through AJAX
+   function SubmitQuestions(){
+    if(arr.length!==0){
+      fetch("{% url 'coursetests:sendquestions' course_slug=course.slug section_slug=section.slug %}", {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}',
+      },
+      body: JSON.stringify(arr), }).then(response => response.json())
+      .then(data => {
+        // Handle the data
+        console.log(data);
+        alert("Questions successfully created!");
+        arr.length = 0;
+        showquestions();
+      })
+      .catch(error => console.error('Error:', error));
+    }// end of the if-statement
+    else{
+      alert("Please create the questions before sending them!");
+    }
+   }
+</script>
+
+{% endblock %}

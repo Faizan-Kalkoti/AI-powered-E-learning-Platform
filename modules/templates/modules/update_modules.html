@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block content %}
+<div class="row" style="margin:0px; padding: 2em;">
+<div class="col-lg-10 col-sm-6">
+<div style="padding:2em; background-color: lightgrey;">
+    <h3 style="text-align: center;"> Update Module</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.media}}
+        {% bootstrap_form form %}
+        <div style="text-align:center;"> 
+         <input type="submit" class="btn btn-warning" value="Update Module">
+         <a class="btn btn-dark" style="color:whitesmoke;" onclick="goBack()">
+           Cancel</a>
+        </div>
+    </form>
+</div></div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+
+{% endblock %}

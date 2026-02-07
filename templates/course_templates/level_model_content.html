@@ -1,0 +1,490 @@
+{% load static %}
+
+
+
+<!--This script is here to show the content of the modals on clicking -->
+<script>
+    // This is the variable of the modals
+    // var modal_title = document.getElementById('Modal_level_title');
+    // var modal_body = document.getElementById('Modal_level_body');
+  
+    var easy_section = document.getElementById('');
+    var medium_section = document.getElementById('');
+    var hard_section = document.getElementById('');
+    var advanced_section= document.getElementById('');
+  
+    function easy_section_click(){
+    var modal_title = document.getElementById('Modal_level_title');
+    var modal_body = document.getElementById('Modal_level_body');
+  
+    modal_title.textContent = "Easy Level";
+  
+    var easy_Str =`
+
+    <!-- if user has taken the course -->
+    {% if user.student in course.student.all  %}  
+
+    {% if not easy_available_sections %}
+      <div style="text-align:center; padding:1em 0em;">
+         <img style="width:4em;" src="{% static 'courses/photos/locked.png' %}">
+      </div>
+    {% endif %}
+  
+     {% if available_sections %}   <!-- one --> 
+
+      {% for section in available_sections %}    
+        {% if section.Difficulty == 'Easy' %}
+        
+         <a data-bs-toggle="collapse" href="#collapseExample{{ forloop.counter }}" class="accordion-button"
+           aria-expanded="false" aria-controls="collapseExample" style="color:black; 
+           text-decoration:none; background-color: lightblue; padding: 1em 1em; 
+           border:1px solid black; display: flex; justify-content:space-between; 
+           align-items: center;"> 
+  
+          <div>
+
+            <span style="padding: 1em 0em 0em 1em;">
+               {{ forloop.counter }}.  {{ section.section_name}} 
+            </span> 
+            <!-- <span style="padding: 1em 0em 0em 1em; color:red;">Available to you</span> -->
+            
+            <!-- to check if section completed -->
+            {% for completed_section in SectionsComplete %}
+               {% if completed_section.section == section %}
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   
+                  <img style="width:2em;" src="{% static 'sections/photos/pin.png' %}">
+               {% endif %}
+            {% endfor %}
+
+          </div>
+         </a>
+         
+          <div class="collapse" id="collapseExample{{ forloop.counter }}" style="padding: 0em 1em;">
+           {% for module in section.has_modules.all %} 
+             <!-- modules loop started -->
+             
+              <div class="card card-body" style="border: 1px solid grey;">
+                <a style="color: black; text-decoration: none; padding:0em 0.5em;" 
+                 href="{% url 'modules:detailmodule' course_slug=course.slug section_slug=section.slug slug=module.slug %}"> 
+                   {{forloop.counter}}. - {{module}} 
+
+                   {% for moduly in module_completed %}
+                      {% if moduly.complete_module == module %}
+                        <span style="text-align:right; color:red; padding-left:1em;">
+                          <img style="width:1.3em;" src="{% static 'courses/photos/tick_96.png' %}">  
+                         </span>
+                      {% endif %}
+                   {% endfor %}
+                  </a> 
+              </div>
+
+           {% endfor %} 
+          <!-- loop for modules in a section ended -->
+          </div>
+        {% endif %}
+
+      {% endfor %} <!-- section loop closed -->
+
+      <!--Not Available sections--> <!-- (1) -->
+      {% for section in excluded_sections %}
+       {% if section.Difficulty == 'Easy' %}
+         <div style="background-color: lightgrey; padding:0em 1em 1em; border:1px solid black; 
+         display: flex; justify-content:space-between; align-items: center;">
+          <span style="padding: 1em 0em 0em 1em;">
+            {{ forloop.counter }}.  {{ section.section_name }} 
+          </span>
+          <span style="padding: 1em 0em 0em 1em; color:red;">Not Available</span>
+         </div>
+       {% endif %}
+      {% endfor%} <!--end of second loop--> 
+      <!--Not Available sections (ended) -->
+  
+     {% else %} <!-- END OF THE -->
+
+        <div style="text-align:center;">
+         <h5> Sections not available yet! </h5> <br> 
+         <img style="width:10em;" src="{% static 'courses/photos/robot_sad.png' %}" alt="robot">
+        </div>
+        <br> 
+  
+      <!--Not Available sections--> <!-- (2) -->
+       {% for section in excluded_sections %}
+         {% if section.Difficulty == 'Easy' %}
+           <div style="background-color: lightgrey; padding:0em 1em 1em; border:1px solid black; 
+           display: flex; justify-content:space-between; align-items: center;">
+            <span style="padding: 1em 0em 0em 1em;">
+               {{ forloop.counter }}.  {{ section.section_name }} 
+            </span>
+            <span style="padding: 1em 0em 0em 1em; color:red;">Not Available</span>
+           </div>
+         {% endif %}
+       {% endfor%} <!--end of second loop--> 
+     <!--Not Available sections (ended) -->
+  
+    {% endif %} <!-- condition of the difficulty being easy -->
+  
+     {% else %}
+     <div style="text-align:center;">
+        <h5> Sections not available yet! </h5> <br> 
+        <img style="width:10em;" src="{% static 'courses/photos/robot_sad.png' %}" alt="robot">
+      </div>
+     {% endif %}`;
+     modal_body.innerHTML =easy_Str;
+    }
+  
+  
+    
+    
+    function medium_section_click(){
+    var modal_title = document.getElementById('Modal_level_title');
+    var modal_body = document.getElementById('Modal_level_body');
+  
+    modal_title.textContent = "Medium Level";
+    modal_body.innerHTML = ` 
+    <!-- if user has taken the course (2) -->
+  {% if user.student in course.student.all  %}   
+
+    {% if not medium_available_sections %}
+      <div style="text-align:center; padding:1em 0em;">
+         <img style="width:4em;" src="{% static 'courses/photos/locked.png' %}">
+      </div>
+    {% endif %} 
+
+    {% if available_sections is not None %}   <!-- one --> 
+  
+      {% for section in available_sections %}    
+        {% if section.Difficulty == 'Medium' %}
+  
+          <a data-bs-toggle="collapse" href="#collapseExample{{ forloop.counter }}" class="accordion-button"
+            aria-expanded="false" aria-controls="collapseExample{{ forloop.counter }}" style="color:black; 
+            text-decoration:none; background-color: lightblue; padding: 1em 1em; 
+            border:1px solid black; display: flex; justify-content:space-between; 
+            align-items: center;"> 
+  
+            <div>
+              <span style="padding: 1em 0em 0em 1em;">
+                {{ forloop.counter }}.  {{ section.section_name}} 
+              </span> 
+              <!-- <span style="padding: 1em 0em 0em 1em; color:red;">Available to you</span> -->
+
+            <!-- to check if section completed -->
+            {% for completed_section in SectionsComplete %}
+               {% if completed_section.section == section %}
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   
+                  <img style="width:2em;" src="{% static 'sections/photos/pin.png' %}">
+               {% endif %}
+            {% endfor %}
+
+            </div>
+          </a>
+  
+          <div class="collapse" id="collapseExample{{ forloop.counter }}" style="padding: 0em 1em;">
+          {% for module in section.has_modules.all %} 
+            <!-- modules loop started -->
+            <div class="card card-body" style="border: 1px solid grey;">
+                <a style="color: black; text-decoration: none; padding:0em 0.5em;" 
+                 href="{% url 'modules:detailmodule' course_slug=course.slug section_slug=section.slug slug=module.slug %}"> 
+                   {{forloop.counter}}. - {{module}} 
+                  
+                  
+                   {% for moduly in module_completed %}
+                   {% if moduly.complete_module == module %}
+                     <span style="text-align:right; color:red; padding-left:1em;">
+                      <img style="width:1.3em;" src="{% static 'courses/photos/tick_96.png' %}">  
+                     </span>
+                   {% endif %}
+                   {% endfor %}</a> 
+            </div>
+          {% endfor %} 
+          </div>
+          <!-- loop for modules in a section ended -->
+  
+        {% endif %}
+      {% endfor %} <!--Here the above "available sections" has finished -->
+  
+  
+      <!-- Not Available sections --> <!-- (1) -->
+        {% for section in excluded_sections %}
+          {% if section.Difficulty == 'Medium' %}
+            <div style="background-color: lightgrey; padding:0em 1em 1em; border:1px solid black; 
+                 display: flex; justify-content:space-between; align-items: center;">
+                 <span style="padding: 1em 0em 0em 1em;">
+                   {{ forloop.counter }}.  {{ section.section_name }} 
+                 </span>
+              <span style="padding: 1em 0em 0em 1em; color:red;">Not Available</span>
+            </div>
+          {% endif %}
+        {% endfor%} <!--end of second loop--> 
+       <!--Not Available sections (ended) -->
+  
+    {% else %}   <!-- if All sections are not available (level is locked off! then) -->
+      
+      <div style="text-align:center;">
+       <h5> Sections not available yet! </h5> <br> 
+       <img style="width:10em;" src="{% static 'courses/photos/robot_sad.png' %}" alt="robot">
+      </div>
+      <br> 
+      
+      <!-- Not Available sections --> <!-- (2) -->
+      {% for section in excluded_sections %}
+       {% if section.Difficulty == 'Medium' %}
+         <div style="background-color: lightgrey; padding:0em 1em 1em; border:1px solid black; 
+         display: flex; justify-content:space-between; align-items: center;">
+          <span style="padding: 1em 0em 0em 1em;">
+            {{ forloop.counter }}.  {{ section.section_name }} 
+          </span>
+          <span style="padding: 1em 0em 0em 1em; color:red;">Not Available</span>
+         </div>
+       {% endif %}
+      {% endfor%} <!--end of second loop--> 
+      <!--Not Available sections (ended) -->
+  
+    {% endif %}
+  
+     {% else %}
+      <div style="text-align:center;">
+        <h5> Sections not available yet! </h5> <br> 
+        <img style="width:10em;" src="{% static 'courses/photos/robot_sad.png' %}" alt="robot">
+      </div> 
+     {% endif%} <!-- for checking available sections --> `;
+    }
+  
+  
+  
+    function hard_section_click(){
+    var modal_title = document.getElementById('Modal_level_title');
+    var modal_body = document.getElementById('Modal_level_body');
+  
+    modal_title.textContent = "Hard Level";
+    modal_body.innerHTML = `
+    <!-- if user has taken the course -->
+    {% if user.student in course.student.all  %}  
+
+    {% if not hard_available_sections %}
+      <div style="text-align:center; padding:1em 0em;">
+         <img style="width:4em;" src="{% static 'courses/photos/locked.png' %}">
+      </div>
+    {% endif %}
+  
+     {% if available_sections %}   <!-- one --> 
+
+      {% for section in available_sections %}    
+        {% if section.Difficulty == 'Hard' %}
+        
+         <a data-bs-toggle="collapse" href="#collapseExample{{ forloop.counter }}" class="accordion-button"
+           aria-expanded="false" aria-controls="collapseExample" style="color:black; 
+           text-decoration:none; background-color: lightblue; padding: 1em 1em; 
+           border:1px solid black; display: flex; justify-content:space-between; 
+           align-items: center;"> 
+  
+          <div>
+            <span style="padding: 1em 0em 0em 1em;">
+               {{ forloop.counter }}.  {{ section.section_name}} 
+            </span> 
+            <!-- <span style="padding: 1em 0em 0em 1em; color:red;">Available to you</span> -->
+
+            <!-- to check if section completed -->
+            {% for completed_section in SectionsComplete %}
+               {% if completed_section.section == section %}
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   
+                  <img style="width:2em;" src="{% static 'sections/photos/pin.png' %}">
+               {% endif %}
+            {% endfor %}
+
+          </div>
+         </a>
+         
+          <div class="collapse" id="collapseExample{{ forloop.counter }}" style="padding: 0em 1em;">
+           {% for module in section.has_modules.all %} 
+             <!-- modules loop started -->
+             <div class="card card-body" style="border: 1px solid grey;">
+                <a style="color: black; text-decoration: none; padding:0em 0.5em;" 
+                 href="{% url 'modules:detailmodule' course_slug=course.slug section_slug=section.slug slug=module.slug %}"> 
+                   {{forloop.counter}}. - {{module}} 
+                  
+                   {% for moduly in module_completed %}
+                   {% if moduly.complete_module == module %}
+                     <span style="text-align:right; color:red; padding-left:1em;"> 
+                      <img style="width:1.3em;" src="{% static 'courses/photos/tick_96.png' %}">  
+                     </span>
+                   {% endif %}
+                   {% endfor %}
+                  
+                  </a> 
+            </div>
+           {% endfor %} 
+          <!-- loop for modules in a section ended -->
+          </div>
+        {% endif %}
+
+      {% endfor %} <!-- section loop closed -->
+
+      
+
+      <!--Not Available sections--> <!-- (1) -->
+      {% for section in excluded_sections %}
+       {% if section.Difficulty == 'Hard' %}
+         <div style="background-color: lightgrey; padding:0em 1em 1em; border:1px solid black; 
+         display: flex; justify-content:space-between; align-items: center;">
+          <span style="padding: 1em 0em 0em 1em;">
+            {{ forloop.counter }}.  {{ section.section_name }} 
+          </span>
+          <span style="padding: 1em 0em 0em 1em; color:red;">Not Available</span>
+         </div>
+       {% endif %}
+      {% endfor%} <!--end of second loop--> 
+      <!--Not Available sections (ended) -->
+  
+     {% else %} <!-- END OF THE -->
+
+        <div style="text-align:center;">
+         <h5> Sections not available yet! </h5> <br> 
+         <img style="width:10em;" src="{% static 'courses/photos/robot_sad.png' %}" alt="robot">
+        </div>
+        <br> 
+
+      <!--Not Available sections--> <!-- (2) -->
+       {% for section in excluded_sections %}
+         {% if section.Difficulty == 'Hard' %}
+           <div style="background-color: lightgrey; padding:0em 1em 1em; border:1px solid black; 
+           display: flex; justify-content:space-between; align-items: center;">
+            <span style="padding: 1em 0em 0em 1em;">
+               {{ forloop.counter }}.  {{ section.section_name }} 
+            </span>
+            <span style="padding: 1em 0em 0em 1em; color:red;">Not Available</span>
+           </div>
+         {% endif %}
+       {% endfor%} <!--end of second loop--> 
+     <!--Not Available sections (ended) -->
+  
+    {% endif %} <!-- condition of the difficulty being easy -->
+  
+     {% else %}
+     <div style="text-align:center;">
+        <h5> Sections not available yet! </h5> <br> 
+        <img style="width:10em;" src="{% static 'courses/photos/robot_sad.png' %}" alt="robot">
+      </div>
+     {% endif %}`;
+    }
+  
+
+
+
+
+    function advanced_section_click(){
+    var modal_title = document.getElementById('Modal_level_title');
+    var modal_body = document.getElementById('Modal_level_body');
+  
+    modal_title.textContent = "Expert Level";
+    modal_body.innerHTML = `  <!-- if user has taken the course -->
+    {% if user.student in course.student.all  %}  
+
+    {% if not advanced_available_sections %}
+      <div style="text-align:center; padding:1em 0em;">
+         <img style="width:4em;" src="{% static 'courses/photos/locked.png' %}">
+      </div>
+    {% endif %}
+  
+     {% if available_sections %}   <!-- one --> 
+
+      {% for section in available_sections %}    
+        {% if section.Difficulty == 'Expert' %}
+        
+         <a data-bs-toggle="collapse" href="#collapseExample{{ forloop.counter }}" class="accordion-button"
+           aria-expanded="false" aria-controls="collapseExample" style="color:black; 
+           text-decoration:none; background-color: lightblue; padding: 1em 1em; 
+           border:1px solid black; display: flex; justify-content:space-between; 
+           align-items: center;"> 
+  
+          <div>
+            <span style="padding: 1em 0em 0em 1em;">
+               {{ forloop.counter }}.  {{ section.section_name}} 
+            </span> 
+            <!-- <span style="padding: 1em 0em 0em 1em; color:red;">Available to you</span> -->
+
+            <!-- to check if section completed -->
+            {% for completed_section in SectionsComplete %}
+               {% if completed_section.section == section %}
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   
+                  <img style="width:2em;" src="{% static 'sections/photos/pin.png' %}">
+               {% endif %}
+            {% endfor %}
+            
+          </div>
+         </a>
+         
+          <div class="collapse" id="collapseExample{{ forloop.counter }}" style="padding: 0em 1em;">
+           {% for module in section.has_modules.all %} 
+             <!-- modules loop started -->
+             <div class="card card-body" style="border: 1px solid grey;">
+                <a style="color: black; text-decoration: none; padding:0em 0.5em;" 
+                 href="{% url 'modules:detailmodule' course_slug=course.slug section_slug=section.slug slug=module.slug %}"> 
+                   {{forloop.counter}}. - {{module}} 
+                  
+                   {% for moduly in module_completed %}
+                   {% if moduly.complete_module == module %}
+                     <span style="text-align:right; color:red; padding-left:1em;"> 
+                      <img style="width:1.3em;" src="{% static 'courses/photos/tick_96.png' %}">    
+                     </span>
+                   {% endif %}
+                   {% endfor %}
+                   
+                  </a> 
+            </div>
+           {% endfor %} 
+          <!-- loop for modules in a section ended -->
+          </div>
+        {% endif %}
+
+      {% endfor %} <!-- section loop closed -->
+
+      
+
+      <!--Not Available sections--> <!-- (1) -->
+      {% for section in excluded_sections %}
+       {% if section.Difficulty == 'Expert' %}
+         <div style="background-color: lightgrey; padding:0em 1em 1em; border:1px solid black; 
+         display: flex; justify-content:space-between; align-items: center;">
+          <span style="padding: 1em 0em 0em 1em;">
+            {{ forloop.counter }}.  {{ section.section_name }} 
+          </span>
+          <span style="padding: 1em 0em 0em 1em; color:red;">Not Available</span>
+         </div>
+       {% endif %}
+      {% endfor%} <!--end of second loop--> 
+      <!--Not Available sections (ended) -->
+  
+     {% else %} <!-- END OF THE -->
+
+        <div style="text-align:center;">
+         <h5> Sections not available yet! </h5> <br> 
+         <img style="width:10em;" src="{% static 'courses/photos/robot_sad.png' %}" alt="robot">
+        </div>
+        <br> 
+
+      <!--Not Available sections--> <!-- (2) -->
+       {% for section in excluded_sections %}
+         {% if section.Difficulty == 'Expert' %}
+           <div style="background-color: lightgrey; padding:0em 1em 1em; border:1px solid black; 
+           display: flex; justify-content:space-between; align-items: center;">
+            <span style="padding: 1em 0em 0em 1em;">
+               {{ forloop.counter }}.  {{ section.section_name }} 
+            </span>
+            <span style="padding: 1em 0em 0em 1em; color:red;">Not Available</span>
+           </div>
+         {% endif %}
+       {% endfor%} <!--end of second loop--> 
+     <!--Not Available sections (ended) -->
+  
+    {% endif %} <!-- condition of the difficulty being easy -->
+  
+     {% else %}
+     <div style="text-align:center;">
+        <h5> Sections not available yet! </h5> <br> 
+        <img style="width:10em;" src="{% static 'courses/photos/robot_sad.png' %}" alt="robot">
+      </div>
+     {% endif %}`;
+    }
+  
+  </script>
+  <!-- end of the script -->

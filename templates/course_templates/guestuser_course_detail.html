@@ -1,0 +1,165 @@
+{% for section in sections %}
+{% if section.Difficulty == "Easy" %}
+
+<div class="row">
+  <div class="col-lg-1">
+    <div style="background-color: rgb(59, 59, 59); padding: 1em 0em; text-align: center; 
+                border-radius: 0.5em; border:1px solid black; color: whitesmoke;">
+      1
+    </div>
+  </div>
+  <div class="col-lg-9">
+    
+    <div style="
+          display: flex; justify-content:space-between; align-items: center; padding:0em 0em 1em;
+          border-radius: 1.2em;
+          border-right: 2px solid white;
+          border-top: 2px solid white;
+          border-bottom: 1px solid rgb(139, 136, 136);
+          border-left: 1px solid rgb(139, 136, 136);
+          background: #e0e0e0;
+          box-shadow:  -0.8em 0.8em 30px #bebebe,
+          20px -20px 60px #ffffff;">
+
+          <span style="padding: 1em 0em 0em 2em;">
+               {{ section.section_name }}
+          </span>
+    </div>
+  </div>
+
+  <div class="col-lg-2">
+    <div style="background: linear-gradient(to top right, #A4E3C1 50%, #98B7D3); box-shadow: -0.2em 0.4em 1em #b5e3b6;
+    padding: 1em; text-align: center; border-radius: 1em; white-space: nowrap; overflow: hidden;  text-overflow: ellipsis;">
+      {{section.Difficulty}} 
+    </div>
+  </div>
+</div>
+<br>
+
+{% endif %}
+{% endfor%} <!--end of first loop-->  
+<!-- <div style="text-align:center; padding-bottom:1.5em; font-weight:700;"> | </div> -->
+
+
+{% for section in sections %}
+{% if section.Difficulty == "Medium" %}
+
+<div class="row">
+  <div class="col-lg-1">
+    <div style="background-color: rgb(59, 59, 59); padding: 1em 0em; text-align: center; border-radius: 0.5em; border:1px solid black;
+                color: whitesmoke;">
+                2
+    </div>
+  </div>
+  <div class="col-lg-9">
+    
+    <div style="padding:0em 0em 1em; display: flex; justify-content:space-between; align-items: center; 
+          border-radius: 1.2em;
+          border-right: 2px solid white;
+          border-top: 2px solid white;
+          border-bottom: 1px solid rgb(139, 136, 136);
+          border-left: 1px solid rgb(139, 136, 136);
+          background: #e0e0e0;
+          box-shadow:  -0.8em 0.8em 30px #bebebe,
+          20px -20px 60px #ffffff;">
+          <span style="padding: 1em 0em 0em 2em;">
+               {{ section.section_name }}
+          </span>
+    </div>
+  </div>
+
+  <div class="col-lg-2">
+    <div style="background: linear-gradient(to top right, rgb(166, 213, 228) 50%, #98B7D3); box-shadow: -0.2em 0.4em 1em rgb(164, 204, 213);
+                padding: 1em; text-align: center; border-radius: 1em; white-space: nowrap; overflow: hidden;  text-overflow: ellipsis;">
+      {{section.Difficulty}} 
+    </div>
+  </div>
+</div>
+<br>
+
+{% endif %}
+{% endfor%} <!--end of second loop-->  
+<!-- <div style="text-align:center; padding-bottom:1.5em; font-weight:700;"> | </div> -->
+
+
+{% for section in sections %}
+{% if section.Difficulty == "Hard" %}
+
+<div class="row">
+<div class="col-lg-1">
+  <div style="background-color: rgb(59, 59, 59); padding: 1em 0em; text-align: center; border-radius: 0.5em; border:1px solid black;
+  color: whitesmoke;">
+    3
+  </div>
+</div>
+<div class="col-lg-9">
+  
+  <div style="padding:0em 0em 1em; display: flex; justify-content:space-between; align-items: center; 
+  border-radius: 1.2em;
+  border-right: 2px solid white;
+  border-top: 2px solid white;
+  border-bottom: 1px solid rgb(139, 136, 136);
+  border-left: 1px solid rgb(139, 136, 136);
+  background: #e0e0e0;
+  box-shadow:  -0.8em 0.8em 30px #bebebe,
+  20px -20px 60px #ffffff;">
+
+        <span style="padding: 1em 0em 0em 2em;">
+             {{ section.section_name }}
+        </span>
+  </div>
+</div>
+
+<div class="col-lg-2">
+  <div style="background: linear-gradient(to top right, #e0c3a9 50%, #e99e82); box-shadow: -0.2em 0.4em 1em #e9d2b2;
+  padding: 1em; text-align: center; border-radius: 1em; white-space: nowrap; overflow: hidden;  text-overflow: ellipsis;">
+    {{section.Difficulty}} 
+  </div>
+</div>
+</div>
+<br>
+
+{% endif %}
+{% endfor%} <!--end of second loop-->  
+<!-- <div style="text-align:center; padding-bottom:1.5em; font-weight:700;"> | </div> -->
+
+
+{% for section in sections %}
+{% if section.Difficulty == "Expert" %}
+
+ <div class="row">
+  <div class="col-lg-1 col-sm-1">
+    <div style="background-color: rgb(59, 59, 59); padding: 1em 0em; text-align: center; border-radius: 0.5em; border:1px solid black;
+    color: whitesmoke;">
+      4
+    </div>
+  </div>
+  <div class="col-lg-9 col-sm-9">
+    
+    <div style="padding:0em 0em 1em; display: flex; justify-content:space-between; align-items: center; 
+  border-radius: 1.2em;
+  border-right: 2px solid white;
+  border-top: 2px solid white;
+  border-bottom: 1px solid rgb(139, 136, 136);
+  border-left: 1px solid rgb(139, 136, 136);
+  background: #e0e0e0;
+  box-shadow:  -0.8em 0.8em 30px #bebebe,
+  20px -20px 60px #ffffff;">
+
+          <span style="padding: 1em 0em 0em 2em;">
+               {{ section.section_name }}
+          </span>
+    </div>
+  </div>
+
+  <div class="col-lg-2 col-sm-2">
+    <div style="background: linear-gradient(to top right, #e5c1e4 50%, #B684C2); box-shadow: -0.2em 0.4em 1em #c888c982;
+     padding: 1em; text-align: center; border-radius: 1em; white-space: nowrap; overflow: hidden;  text-overflow: ellipsis;">
+      {{section.Difficulty}} 
+    </div>
+  </div>
+</div>
+<br>
+
+{% endif %}
+{% endfor%} <!--end of second loop-->  

@@ -1,0 +1,154 @@
+.course-img{
+    /* width:18rem; */
+    height: 10em;
+    scale: 0.8;
+}
+
+.course-img:hover{
+    scale: 0.9;
+    transition: 0.3s;
+}
+
+.course-card{
+    width:19rem; 
+    height: 19rem; 
+    border-radius:0.5em; 
+    margin-bottom: 1em; 
+    box-shadow: 0em 1.5em 2em rgb(224, 224, 224); 
+    overflow:none;
+}
+
+
+/* Course detail styling */
+.course-detail-image{
+    border: 1px solid rgb(135, 135, 135);
+    background-color: rgb(255, 255, 255);
+    width: 20em; 
+    padding:1em; 
+    border-radius: 1em;
+}
+
+/* Student styling */
+.revision-btn{
+    background-color: white;
+    transition:0.5s;
+}
+
+.revision-btn:hover{
+    background-color: rgb(154, 197, 154);
+    transition:0.5s;
+    scale: 1.05;
+}
+
+.course-test-btn{
+    background-color: white;
+    transition: 0.5s;
+}
+
+.course-test-btn:hover{
+    background-color: rgb(213, 163, 163);
+    transition: 0.6s;
+    scale: 1.05; 
+}
+
+.course-feedback-btn{
+    background-color: white;
+    transition: 0.5s;
+}
+
+.course-feedback-btn:hover{
+    background-color: rgb(163, 176, 213);
+    transition: 0.6s;
+    scale: 1.05; 
+}
+
+.next-level-btn{
+    font-size: 1.1em;
+    transition: 0.5s;
+}
+
+.next-level-btn:hover{
+    scale: 1.05;
+    text-decoration: none;
+    font-weight: 400;
+    transition: 0.5s;
+}
+
+
+
+
+/* Teacher Dashboard css settings */
+.teacher-options{
+    padding: 1em 0.2em;
+}
+.option-elements{
+    padding: 0.4em 2em; 
+    border: 1px solid black; 
+    background-color: rgb(224, 224, 224); 
+    width: 16em;
+}
+
+.option-elements:hover{
+    background-color: white;
+}
+
+.teacher-option-links{
+    text-decoration: none;
+    color: black;
+    border: 1px solid grey;
+    padding:0.1em 0.5em;
+}
+
+.teacher-option-links:hover{
+    text-decoration: none;
+}
+
+/* Teacher dashboard graph styling */
+.col-graph{
+    text-align: center;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    padding:1em 0em; 
+    padding-top: 0em;
+}
+
+
+
+/* For course detail page */
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+  }
+
+  #myChart {
+    height: 100%;
+    width: 100%;
+    min-height: 10em;
+  }
+
+  .zc-ref {
+    display: none;
+  }
+/* ended here  */
+
+@media (min-width: 300px) and (max-width: 600px) {
+    /* For coures detail page */
+    .course-detail-image{
+        width: 12em;
+    }   
+}
+
+@media (min-width: 100px) and (max-width: 300px) {
+    /* For coures detail page */
+    .course-detail-image{
+        width: 10em;
+    }   
+}
+/* 
+.b{
+    background-image: url({% static 'coursetests/photos/result_bg.png'' %});
+    background-repeat: no-repeat;
+    background-size: contain;
+} */

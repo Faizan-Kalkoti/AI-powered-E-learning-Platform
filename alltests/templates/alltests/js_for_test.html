@@ -1,0 +1,277 @@
+
+{% load static %}
+
+<!-- JavaScript Code started here  -->
+<script src="{% static 'accounts/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+// Create an object for storing the questions
+// var obj = {};
+// Store all the questions
+var arrayofquestions = [];
+`{% for q in questions %}`;
+   var obj={"question":`{{q}}`, "option_a":`{{q.options_a}}`,
+   "option_b": `{{q.options_b}}`, "option_c": `{{q.options_c}}`,
+   "option_d":`{{q.options_d}}`, "id" :`{{q.id}}`};
+
+   arrayofquestions.push(obj);
+`{% endfor %}`
+
+console.log(arrayofquestions);
+console.log(`{{questions}}`);
+
+// This is related to the saving action
+// Will be used when the save function is defined 
+var result = [];
+
+// This is to click the questions
+// THis will allow us to choose the questions to attempt from the list
+function showquestion(indexy){
+  var qid = document.getElementById('qno');
+  var ques = document.getElementById('quest-text');
+  var op_a = document.getElementById('op_a');
+  var op_b = document.getElementById('op_b');
+  var op_c = document.getElementById('op_c');
+  var op_d = document.getElementById('op_d');
+  var q_id = document.getElementById('questionid');
+
+  qid.innerText = indexy;
+  ques.innerText = arrayofquestions[indexy-1].question;
+  op_a.innerText = arrayofquestions[indexy-1].option_a;
+  op_b.innerText = arrayofquestions[indexy-1].option_b;
+  op_c.innerText = arrayofquestions[indexy-1].option_c;
+  op_d.innerText = arrayofquestions[indexy-1].option_d;
+  q_id.innerText = arrayofquestions[indexy-1].id;
+
+  // To store the ans and clear it when moving to the next question
+  var radiobuttons = document.getElementsByName('radio-option');
+  for(var i=0; i<radiobuttons.length; i++){
+    if (radiobuttons[i].checked) {
+            // Store this ans in result array and then clear the option
+            radiobuttons[i].checked = false;
+        }
+  }
+
+  let checkradio = {
+    "A": "rad_a",
+    "B": "rad_b",
+    "C": "rad_c",
+    "D": "rad_d"
+  };
+
+  let checkradiodiv = {
+    "A": "div_a",
+    "B": "div_b",
+    "C": "div_c",
+    "D": "div_d"
+  };
+
+  //to check if there are any question that have been already been attempted
+  let curr_qid = parseInt(document.getElementById('questionid').innerText);
+  let bool_result =false;
+  let indi = -1;
+  let ansy = 'Z';
+
+  if(result.length !=0){
+    for(var i=0; i<result.length; i++){
+      if(curr_qid === result[i].qID){
+      bool_result = true;
+      indi = i;
+      ansy = result[i].ans;
+      }
+    }//for loop ended
+
+    let lowerans = ansy.toLowerCase();
+    if(bool_result === true){
+      let std = `
+        <input value="${ansy}" class="form-check-input" type="radio" name="radio-option" id="${checkradio[ansy]}" checked>
+        <label class="form-check-label" id="op_${lowerans}" for="${checkradio[ansy]}">
+          ${arrayofquestions[indexy-1][`option_${lowerans}`]}
+        </label>`;
+      document.getElementById(checkradiodiv[ansy]).innerHTML = std;
+      // console.log(document.getElementById(checkradio[ansy]))
+    }
+  }// outer if finished
+
+}
+//Show function ended!
+
+
+  
+
+
+// To save the answer and move to next question
+document.getElementById('savebtn').addEventListener('click', function(){
+  let radiobuttons = document.getElementsByName('radio-option');
+  var curr_ind_text = document.getElementById('qno').innerText;
+  var curr_ind = parseInt(curr_ind_text);
+  var curr_qid = parseInt(document.getElementById('questionid').innerText);
+  var radioflag = false;
+
+  for(var i=0; i<radiobuttons.length; i++){
+    if (radiobuttons[i].checked) {
+            // Store this ans in result array and then clear the option
+            var cur_ans = radiobuttons[i].value;
+            radioflag = true;
+            break;
+        }
+  }
+
+  // To check if a radio button has been selected or not
+  if(radioflag ===true && curr_ind != 0){
+  var curr_ans_obj = {'qID':curr_qid, 'ans': cur_ans ,'testtype': '{{testtype}}', 'testname': '{{testname}}'};
+   
+  // To Check if this question has been attempted before
+  var bool_result = false;
+  var indi = -1;
+  if(result.length !=0){
+    // loop for result index
+    for(var i=0; i<result.length; i++){
+      if(curr_qid === result[i].qID){
+        bool_result = true;
+        indi = i;
+        break;
+      }
+    }//for loop ended here
+
+      // To check if we need to update it
+      if(bool_result === true){
+        alert("Your Answer has been updated!")
+        result[indi].ans = cur_ans;
+      }else{
+        result.push(curr_ans_obj);
+      }
+
+  }//if this is the first element
+  else{
+     // To push the result to the array
+     result.push(curr_ans_obj);
+  }
+
+  console.log(result);
+  if(curr_ind != 20){
+    showquestion(curr_ind+1); // to move to the next question
+  }
+  document.getElementById(`q${curr_ind}`).style.backgroundColor="lightgreen";
+
+  // To check if the questions is the demo question - 0
+  }else if(curr_ind === 0){
+    // alert("This is a demo question");
+    showquestion(curr_ind+1);
+  }else{
+    alert("Select and option first!");
+  }
+
+}); 
+// Save function ended! 
+
+
+
+// Function to clear the options
+function clearoptions(){
+  let radiobuttons = document.getElementsByName('radio-option');
+  for(var i=0; i<radiobuttons.length; i++){
+    if (radiobuttons[i].checked) {
+      radiobuttons[i].checked = false;
+        }
+  }
+}
+
+
+// button to end test at the top
+document.getElementById('endtest').addEventListener('click', function(){
+  // alert("Test Ended!")
+  let result_len = result.length;
+  document.getElementById('questionattempted1').innerHTML = `[Questions attempted: ${result_len}/20]`;
+  console.log("Questions attempted: "+result_len);
+});
+// This is for ending the test
+
+
+
+// This is to send the result through submit button
+function sendData(){
+   console.log("sending data....")
+    fetch("{% url 'alltests:storeresult' %}",
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+        }, body: JSON.stringify(result),
+    }).then(function(response){
+        return response.json();
+    }).then(data => {
+        console.log('Success:', data);
+        alert("success");
+        //to move to result page only if successful
+           //window.location.assign();
+              // window.open("{% url 'alltests:maintestresult' course_slug=course.slug testtype=testtype testname=testname %}", '_blank'); 
+             // window.close();
+           // Navigate to the new URL and replace the current document
+           window.location.replace("{% url 'alltests:maintestresult' course_slug=course.slug testtype=testtype testname=testname %}");
+
+    }).catch(function(error){
+        console.error(error);
+    });
+}
+// For "POST" Request to send data
+
+
+
+
+// Timer related javascript code here 
+  var time_rem = document.getElementById('time_remaining');
+  var min = 19;
+  var sec = 60;
+
+  
+// To simulate the timer
+  const intervalID = setInterval(()=>{
+    sec = sec - 1;
+    time_rem.innerHTML = `${min} : ${sec}`;
+    if(sec === 0){
+      min = min-1;
+      sec = 60;
+    }
+  },1000)
+
+
+// To stop when the timer sets to zero
+var myModal = document.getElementById('submit-modal');
+  setInterval(()=>{
+    if(min < 0){
+      clearInterval(intervalID); 
+      // To open an end test modal - 2 (when the timer ends) 
+      function openModal() {
+            myModal.classList.add('show');
+            myModal.style.display = 'block';
+            myModal.removeAttribute('aria-hidden')
+            myModal.setAttribute('aria-modal', 'true');
+            document.body.classList.add('modal-open');
+            // to show backdrop
+            var yomodal = document.getElementById('yo-modal');
+            yomodal.classList.add('show');
+            yomodal.style.display = "block";
+          }
+      myModal.click(openModal());
+        }
+      }, 500);
+// Timer related code ended here
+
+
+
+// To disable right-click on the test page
+/*
+ document.addEventListener('contextmenu', function(event) {
+  event.preventDefault(); // Prevent default right-click action
+});
+*/
+
+
+
+// To get the message before the page is exited
+  window.onbeforeunload = function() {
+      alert("Are you sure, You want to leave the test?")
+  };
+
+</script>

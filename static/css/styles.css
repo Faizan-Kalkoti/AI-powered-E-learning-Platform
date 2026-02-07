@@ -1,0 +1,312 @@
+.hello{
+    color: red;
+}
+
+.cont{
+    padding: 3em;
+    background:linear-gradient(to top left , rgb(172, 171, 171) ,rgb(231, 231, 231));
+    backdrop-filter: blur(15px);
+}
+
+#home-robot1{
+    padding: 0%;
+}
+
+.home-robot{
+    padding: 0px;
+}
+
+.bg-text-len{
+    padding: 0em;
+}
+
+.home-box-heading{
+    font-size: 2em; font-weight: 600;
+}
+
+.home-text-boxes1{
+    padding: 1em 4em; 
+    align-items: right; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+}
+
+
+.home-box-content{
+    font-size: 1.2em; 
+    text-align: justify; 
+    justify-content: space-evenly;
+}
+
+.home-text-bottom{
+    color: white; 
+    text-shadow: 0.2em 0.2em 0.6em rgba(0, 0, 0, 0.543);
+    font-size: 1.9em;
+}
+
+
+
+/* Login page styling */
+
+.login_robot{
+   position: absolute; 
+   height: 17em; 
+   bottom: 4em; 
+   z-index: -10; 
+   left: -2em;
+  /* For animation */
+  animation-name: moverobot;
+  animation-duration: 6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite ; 
+  /* animation-play-state: running; */
+}
+
+@keyframes moverobot {
+    0% {
+      /* rotate: 0deg; */
+      rotate: 0deg;
+      transform: translate(3em, 0em);
+      /* translate: (1em, 0em); */
+      /* animation-play-state: paused; */
+    }
+    20% {
+        rotate: -30deg;
+        transform: translate(-4em, 0em);
+        /* animation-play-state: running; */
+    }
+    40%{
+        rotate: -30deg;
+        transform: translate(-4em, 0em);
+    }
+    50% {
+        rotate: 0deg;
+        transform: translate(3em, 0em);
+        /* animation-play-state: paused; */
+    }
+    100% {
+        rotate: 0deg;
+        transform: translate(3em, 0em);
+        /* animation-play-state: paused; */
+    }
+   
+  }
+
+
+.infomation-div{
+    background-color: rgb(249, 249, 249); 
+    padding: 2em 2em; 
+    border-radius: 1em; 
+    box-shadow: 0em 1.5em 3em rgb(196, 159, 204, 0.5);
+}
+
+.infomation-div2{
+    background-color: rgb(249, 249, 249); 
+    padding: 2em 2em; 
+    border-radius: 1em; 
+    box-shadow: 0em 1.5em 3em rgb(161, 184, 249, 0.8);
+}
+
+.info-row{
+    padding: 2em 3em; 
+    margin: 0px;
+    transition: 2s ease-in-out;
+    transform: translateX(100%);
+}
+
+
+.info-row1{
+    padding: 2em 3em; 
+    margin: 0px;
+    transition: 2s ease-in-out;
+    transform: translateX(-100%);
+}
+
+.centered {
+    /* Centered position */
+    transform: translateX(0em);
+    transition: 2s;
+  }
+
+.all-info-rows{
+    overflow-x: hidden;
+}
+
+.img-width{
+    width: 30em;
+}
+
+@media screen and (max-width: 500px) {
+    .img-width{
+        max-width: 15em;
+    }
+}
+
+.parallax-effect{
+    padding: 4em 7em; 
+    border-radius: 3em;  
+    text-align: center;
+    box-shadow: -0em -1em 2em rgba(121, 161, 232, 0.566), 
+    1em 0em 1.5em rgba(175, 252, 175, 0.447),
+    0.5em 1em 2em rgba(172,172,210, 0.734), 
+    -0.5em 0em 1.5em rgba(252, 171, 171, 0.616); 
+    /* background:linear-gradient(rgb(166, 198, 209),rgb(102, 122, 129)); */
+    background: linear-gradient(to bottom right, rgba(121, 162, 232, 0.34),rgba(175, 177, 216, 0.386));
+    animation-name: lightning;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+}
+
+.signup-button{
+    padding: 0.5em 2em; 
+    border-radius: 0.5em; 
+    color: white; 
+    background-color: rgb(43, 43, 43); 
+    transition: 0.6s;
+    text-decoration: none;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.signup-button:hover{
+    transform: scale(1.1);
+    /* scale: 1.1; */
+    font-size: 1.3em;
+    transition: 0.6s;
+    text-decoration: none;
+}
+
+
+/* 
+blue:  rgba(121, 161, 232, 0.566)
+green: rgba(144, 238, 144, 0.265)
+purple: rgba(172,172,210, 0.734)
+red: rgba(247, 160, 160, 0.616)
+*/
+
+@keyframes lightning{
+    0%{
+        box-shadow: -0em -1em 2em rgba(153, 181, 231, 0.566), 
+        1em 0em 1.5em rgba(170, 246, 170, 0.489),
+        1em 1em 2em rgba(172,172,210, 0.734),
+         -0.6em 0em 1.5em rgba(247, 160, 160, 0.616);
+    }
+
+    25%{
+        box-shadow: -0em -1em 2em rgba(247, 160, 160, 0.616), 
+        1em 0em 1.5em rgba(121, 161, 232, 0.566),
+        1em 1em 2em rgba(170, 246, 170, 0.489),
+        -0.6em 0em 1.5em rgba(172,172,210, 0.734);
+    }
+    50%{
+        box-shadow: -0em -1em 2em rgba(172,172,210, 0.734), 
+        1em 0em 1.5em rgba(247, 160, 160, 0.616),
+        1em 1em 2em rgba(121, 161, 232, 0.566),
+         -0.6em 0em 1.5em rgba(170, 246, 170, 0.489);
+    }
+    75%{
+        box-shadow: -0em -1em 2em rgba(170, 246, 170, 0.489), 
+        1em 0em 1.5em rgba(172,172,210, 0.734),
+        1em 1em 2em rgba(247, 160, 160, 0.616),
+         -0.6em 0em 1.5em rgba(121, 161, 232, 0.566);
+    }
+}
+
+
+.home-page-robot-man{
+    left:5em;
+}
+
+
+
+
+/* Styling for phone like interface dimensions */
+@media  only screen and (max-width: 600px) and (min-width: 150px){
+    .login_robot{
+        height: 12em; 
+    }
+
+    .info-row{
+        padding: 0em;
+    }
+
+    .img-width{
+        width:22em;
+    }
+
+    .home-page-robot-man{
+        left:0em;
+    }
+    
+    
+
+    #home-robot1{
+        transform: translateX(-2em);
+    }
+
+    .home-robot{
+        transform: translateX(-2em);
+    }
+
+    .bg-text-len{
+        padding: 1em 0em;
+    }
+
+    .home-text-boxes1{
+        padding: 1em 1em; 
+        align-items: center; 
+    }
+
+    .home-box-heading{
+        font-size: 1.1em; font-weight: 600;
+        text-align: left;
+    }
+
+    .home-box-content{
+        font-size: 1em;
+        text-align: left;
+    }
+
+    .parallax-effect{
+        padding: 4em 2em; 
+        padding-bottom: 2em;
+    }
+
+    .home-text-bottom{
+        font-size: 1.2em;
+    }
+    @keyframes moverobot {
+        0% {
+          /* rotate: 0deg; */
+          rotate: 0deg;
+          transform: translate(3em, 0em);
+          /* translate: (1em, 0em); */
+          /* animation-play-state: paused; */
+        }
+        20% {
+            rotate: -30deg;
+            transform: translate(-2em, 0em);
+            /* animation-play-state: running; */
+        }
+        40%{
+            rotate: -30deg;
+            transform: translate(-2em, 0em);
+        }
+        50% {
+            rotate: 0deg;
+            transform: translate(3em, 0em);
+            /* animation-play-state: paused; */
+        }
+        100% {
+            rotate: 0deg;
+            transform: translate(3em, 0em);
+            /* animation-play-state: paused; */
+        }   
+      }
+
+
+
+}
+
+

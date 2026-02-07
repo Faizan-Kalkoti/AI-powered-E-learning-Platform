@@ -1,0 +1,486 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+{% if user.student and user.is_authenticated %}
+{% if user.student in course.student.all  %}
+{% if give_test == 'yes' %}
+
+<!-- Top heading -->
+<div class="row" style="padding: 2em; margin: 0px; background-color: whitesmoke; box-shadow: 0em 1em 1em #b9b9b9;">
+    <div class="col-lg-6">
+       <h2>Pre-Requisite Test for {{course}}</h2> 
+    </div>
+    <div class="col-lg-6" >
+        <div style="text-align: right;"> 
+            Time remaining - <span id="time_remaining">15 : 60</span>  &nbsp; &nbsp;
+            <button id="endtest" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#pretest-submit">End test</button>
+        </div>
+    </div>
+</div>
+<!-- end of the top part -->
+<br><br>
+
+
+<!--row started here-->
+<div class="row" style="margin: 0px; padding: 1em;">
+    <div class="col-lg-7">
+        <div><h3>Current Question</h3></div>
+          <hr>
+          <div>
+            <div class="current-question" id="curr-question">
+                <h5> <div style="padding-bottom:0.4em;">Question <span id="qno">0</span> </div>
+                <span id="quest-text">Here will be your question. choose the appropriate answer 
+                  from the options given below: </span> </h5>
+            </div><br>
+            <div class="current-options" id="curr-options">
+             <!-- <form id="radio-form"> -->
+                <div class="form-check" id="div_a">
+                  <input value="A" class="form-check-input" type="radio" name="radio-option" id="rad_a">
+                  <label class="form-check-label" id="op_a" for="rad_a">
+                    Option A</label>
+                </div>
+                <div class="form-check" id="div_b">
+                  <input value="B" class="form-check-input" type="radio" name="radio-option" id="rad_b" >
+                  <label class="form-check-label" id="op_b" for="rad_b">
+                    Option B
+                  </label>
+                </div>
+                <div class="form-check" id="div_c">
+                  <input value="C" class="form-check-input" type="radio" name="radio-option" id="rad_c" >
+                  <label class="form-check-label" id="op_c" for="rad_c">
+                    Option C
+                  </label>
+                </div>
+                <div class="form-check" id="div_d">
+                  <input value="D" class="form-check-input" type="radio" name="radio-option" id="rad_d" >
+                  <label class="form-check-label" id="op_d" for="rad_d">
+                    Option D
+                  </label>
+                </div>
+                <div id="questionid" style="display: none;">
+                </div>
+             <!-- </form> -->
+            </div>
+
+          </div><br>
+          <div style="padding: 1em; text-align: center;">
+            <button class="btn btn-dark" onclick="clearoptions()" style="width: 6em; font-size: 1.2em;"> Clear</button> &nbsp; &nbsp;
+            <button class="btn btn-success" style="width: 6em; font-size: 1.2em;" id="savebtn"> Save</button>
+          </div>
+    </div>
+    <!--End of the column with single question -->
+
+    
+    
+    <!-- Column to show question to switch between the questions -->
+    <div class="col-lg-5" style="background-color: rgb(209, 222, 222); border-radius: 1em;">
+            <div style="padding-top: 0.5em;">
+               <h4 style="text-align: center;"> All Questions </h4>
+               <hr>
+            </div>
+            <div class="row" style="margin: 0px; padding: 0.4em;">
+                <div class="col-lg-4" style="padding: 1em;">
+                    <div id="q1" class="test-questions" onclick="showquestion(1)">Q1</div><br>
+                    <div id="q2" class="test-questions" onclick="showquestion(2)">Q2</div><br>
+                    <div id="q3" class="test-questions" onclick="showquestion(3)">Q3</div><br>
+                    <div id="q4" class="test-questions" onclick="showquestion(4)">Q4</div><br>
+                    <div id="q5" class="test-questions" onclick="showquestion(5)">Q5</div><br>
+                </div>
+                <div class="col-lg-4" style="padding: 1em;">
+                    <div id="q6" class="test-questions" onclick="showquestion(6)">Q6</div><br>
+                    <div id="q7" class="test-questions" onclick="showquestion(7)">Q7</div><br>
+                    <div id="q8" class="test-questions" onclick="showquestion(8)">Q8</div><br>
+                    <div id="q9" class="test-questions" onclick="showquestion(9)">Q9</div><br>
+                    <div id="q10" class="test-questions" onclick="showquestion(10)">Q10</div><br>
+                </div>
+                <div class="col-lg-4" style="padding: 1em;">
+                    <div id="q11" class="test-questions" onclick="showquestion(11)">Q11</div><br>
+                    <div id="q12" class="test-questions" onclick="showquestion(12)">Q12</div><br>
+                    <div id="q13" class="test-questions" onclick="showquestion(13)">Q13</div><br>
+                    <div id="q14" class="test-questions" onclick="showquestion(14)">Q14</div><br>
+                    <div id="q15" class="test-questions" onclick="showquestion(15)">Q15</div><br>
+                </div>
+            </div>
+        </div>
+    </div> <!--row ended here -->
+</div>
+<!--outermain div end -->
+<br><br>
+
+
+
+
+<!-- Modal start (To End Test) -->
+<div class="modal fade" id="pretest-submit" data-bs-backdrop="static" style="padding: 1em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <h1 class="fs-3" id="Modal_level_title" style="text-align: center; padding-top: 1em;">
+        End test now?</h1>
+      <hr>
+      <div class="modal-body" id="Modal_level_body" style="text-align: center;">
+        <!--modal body -->
+         <div style="font-size: 1.2em;">
+            Do you wish to end the test? 
+            All questions attempted will be evaluated.
+            <br><br>
+            <span id="questionattempted1">
+                [Questions attempted: 10/15]
+            </span>
+         </div><br>
+
+         <div style="padding-top: 0.4em;">
+         {% if give_test == 'yes' %}
+            <button class="btn btn-danger" id="seeResult1" onclick="sendData()"
+             style="margin: 0.2em;">Submit Test</button>
+         {% else %}
+             <button class="btn btn-danger" style="margin: 0.2em;" 
+             onclick="alert('You have already given the test!')">See results</button>
+         {% endif %}
+         </div>
+      </div>
+      <div style="text-align: center; padding-bottom: 1em;" >
+        <hr>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal end -->
+
+
+
+<!-- Modal 2 start -->
+<div class="modal-backdrop fade" style="display: none;" id="yo-modal"></div>
+<div class="modal fade" id="submit-modal" data-bs-backdrop="static" style="padding: 3em;"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: white;">
+      <div class="modal-body" id="Modal_level_body" style="text-align: center;">
+        <!--modal body -->
+         <div style="font-size: 1.1em;">
+            <h3>TIME OVER</h3>
+            <h4>The test has ended!</h4>
+            <br>
+            <div id="questionattempted2">
+                [Questions attempted: 10/15]
+            </div>
+         </div><br>
+
+         <div style="padding-top: 0.4em;">
+          {% if give_test == 'yes' %}
+            <button class="btn btn-danger" id="seeResult2" onclick="sendData()" 
+            style="margin: 0.2em;">See results</button>
+          {% else %}
+             <button class="btn btn-danger" style="margin: 0.2em;" 
+             onclick="alert('You have already given the test!')">See results</button>
+          {% endif %}
+            <!-- href="{% url 'coursetests:pretestresult' course_slug=course.slug %}" -->
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal 2 end -->
+
+
+
+
+
+
+
+
+{% else %}
+<div style="padding: 2em;">
+  <h1 style="text-align: center;">You are have already given this test!</h1>
+  <br> <br>
+  <div style="text-align: center;">
+    <img style="height: 40vh;" src="{% static 'courses/photos/robot_sad.png' %}" alt="">
+  </div>
+</div>
+{% endif %}
+
+
+
+
+<!-- JavaScript Code started here  -->
+<script src="{% static 'accounts/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+// Create an object for storing the questions
+// var obj = {};
+// Store all the questions
+var arrayofquestions = [];
+`{% for q in questions %}`;
+  var obj={"question":`{{q}}`, "option_a":`{{q.options_a}}`,
+ "option_b": `{{q.options_b}}`, "option_c": `{{q.options_c}}`,
+ "option_d":`{{q.options_d}}`, "id" :`{{q.id}}`};
+
+  arrayofquestions.push(obj);
+`{% endfor %}`
+
+console.log(arrayofquestions);
+
+// This is related to the saving action
+// Will be used when the save function is defined 
+var result = [];
+
+// This is to click the questions
+// THis will allow us to choose the questions to attempt from the list
+function showquestion(indexy){
+  var qid = document.getElementById('qno');
+  var ques = document.getElementById('quest-text');
+  var op_a = document.getElementById('op_a');
+  var op_b = document.getElementById('op_b');
+  var op_c = document.getElementById('op_c');
+  var op_d = document.getElementById('op_d');
+  var q_id = document.getElementById('questionid');
+
+  qid.innerText = indexy;
+  ques.innerText = arrayofquestions[indexy-1].question;
+  op_a.innerText = arrayofquestions[indexy-1].option_a;
+  op_b.innerText = arrayofquestions[indexy-1].option_b;
+  op_c.innerText = arrayofquestions[indexy-1].option_c;
+  op_d.innerText = arrayofquestions[indexy-1].option_d;
+  q_id.innerText = arrayofquestions[indexy-1].id;
+
+  // To store the ans and clear it when moving to the next question
+  var radiobuttons = document.getElementsByName('radio-option');
+  for(var i=0; i<radiobuttons.length; i++){
+    if (radiobuttons[i].checked) {
+            // Store this ans in result array and then clear the option
+            radiobuttons[i].checked = false;
+        }
+  }
+
+  let checkradio = {
+    "A": "rad_a",
+    "B": "rad_b",
+    "C": "rad_c",
+    "D": "rad_d"
+  };
+
+  let checkradiodiv = {
+    "A": "div_a",
+    "B": "div_b",
+    "C": "div_c",
+    "D": "div_d"
+  };
+
+  //to check if there are any question that have been already been attempted
+  let curr_qid = parseInt(document.getElementById('questionid').innerText);
+  let bool_result =false;
+  let indi = -1;
+  let ansy = 'Z';
+
+  if(result.length !=0){
+    for(var i=0; i<result.length; i++){
+      if(curr_qid === result[i].qID){
+      bool_result = true;
+      indi = i;
+      ansy = result[i].ans;
+      }
+    }//for loop ended
+
+    let lowerans = ansy.toLowerCase();
+    if(bool_result === true){
+      let std = `
+        <input value="${ansy}" class="form-check-input" type="radio" name="radio-option" id="${checkradio[ansy]}" checked>
+        <label class="form-check-label" id="op_${lowerans}" for="${checkradio[ansy]}">
+          ${arrayofquestions[indexy-1][`option_${lowerans}`]}
+        </label>`;
+      document.getElementById(checkradiodiv[ansy]).innerHTML = std;
+      // console.log(document.getElementById(checkradio[ansy]))
+    }
+  }// outer if finished
+
+}
+//Show function ended!
+
+
+  
+
+
+// To save the answer and move to next question
+document.getElementById('savebtn').addEventListener('click', function(){
+  let radiobuttons = document.getElementsByName('radio-option');
+  var curr_ind_text = document.getElementById('qno').innerText;
+  var curr_ind = parseInt(curr_ind_text);
+  var curr_qid = parseInt(document.getElementById('questionid').innerText);
+  var radioflag = false;
+
+  for(var i=0; i<radiobuttons.length; i++){
+    if (radiobuttons[i].checked) {
+            // Store this ans in result array and then clear the option
+            var cur_ans = radiobuttons[i].value;
+            radioflag = true;
+            break;
+        }
+  }
+
+  // To check if a radio button has been selected or not
+  if(radioflag ===true && curr_ind != 0){
+  var curr_ans_obj = {'qID':curr_qid, 'ans': cur_ans};
+   
+  // To Check if this question has been attempted before
+  var bool_result = false;
+  var indi = -1;
+  if(result.length !=0){
+    // loop for result index
+    for(var i=0; i<result.length; i++){
+      if(curr_qid === result[i].qID){
+        bool_result = true;
+        indi = i;
+        break;
+      }
+    }//for loop ended here
+
+      // To check if we need to update it
+      if(bool_result === true){
+        alert("Your Answer has been updated!")
+        result[indi].ans = cur_ans;
+      }else{
+        result.push(curr_ans_obj);
+      }
+
+  }//if this is the first element
+  else{
+     // To push the result to the array
+     result.push(curr_ans_obj);
+  }
+
+  console.log(result);
+  if(curr_ind != 15){
+    showquestion(curr_ind+1); // to move to the next question
+  }
+  document.getElementById(`q${curr_ind}`).style.backgroundColor="lightgreen";
+
+  // To check if the questions is the demo question - 0
+  }else if(curr_ind === 0){
+    // alert("This is a demo question");
+    showquestion(curr_ind+1);
+  }else{
+    alert("Select and option first!");
+  }
+
+}); 
+// Save function ended! 
+
+
+
+// Function to clear the options
+function clearoptions(){
+  let radiobuttons = document.getElementsByName('radio-option');
+  for(var i=0; i<radiobuttons.length; i++){
+    if (radiobuttons[i].checked) {
+      radiobuttons[i].checked = false;
+        }
+  }
+}
+
+
+// button to end test at the top
+document.getElementById('endtest').addEventListener('click', function(){
+  // alert("Test Ended!")
+  let result_len = result.length;
+  document.getElementById('questionattempted1').innerHTML = `[Questions attempted: ${result_len}/15]`;
+  console.log("Questions attempted: "+result_len);
+});
+// This is for ending the test
+
+
+
+// This is to send the result through submit button
+function sendData(){
+    fetch("{% url 'coursetests:storeresult' %}",
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+        }, body: JSON.stringify(result),
+    }).then(function(response){
+        return response.json();
+    }).then(data => {
+        console.log('Success:', data);
+        alert("success");
+        //to move to result page only if successful
+           //window.location.assign();
+           window.open("{% url 'coursetests:pretestresult' course_slug=course.slug %}", '_blank'); 
+           window.close();
+    }).catch(function(error){
+        console.error(error);
+    });
+}
+// For "POST" Request to send data
+
+
+
+
+// Timer related javascript code here 
+  var time_rem = document.getElementById('time_remaining');
+  var min = 14;
+  var sec = 60;
+
+  
+// To simulate the timer
+  const intervalID = setInterval(()=>{
+    sec = sec - 1;
+    time_rem.innerHTML = `${min} : ${sec}`;
+    if(sec === 0){
+      min = min-1;
+      sec = 60;
+    }
+  },1000)
+
+
+// To stop when the timer sets to zero
+var myModal = document.getElementById('submit-modal');
+  setInterval(()=>{
+    if(min < 0){
+      clearInterval(intervalID); 
+      // To open an end test modal - 2 (when the timer ends) 
+      function openModal() {
+            myModal.classList.add('show');
+            myModal.style.display = 'block';
+            myModal.removeAttribute('aria-hidden')
+            myModal.setAttribute('aria-modal', 'true');
+            document.body.classList.add('modal-open');
+            // to show backdrop
+            var yomodal = document.getElementById('yo-modal');
+            yomodal.classList.add('show');
+            yomodal.style.display = "block";
+          }
+      myModal.click(openModal());
+        }
+      }, 500);
+// Timer related code ended here
+
+
+
+// To disable right-click on the test page
+ document.addEventListener('contextmenu', function(event) {
+  event.preventDefault(); // Prevent default right-click action
+});
+
+
+
+// To get the message before the page is exited
+  window.onbeforeunload = function() {
+      alert("Are you sure, You want to leave the test?")
+  };
+
+</script>
+
+{% else %}
+<h2 style="text-align: center;">You Are Not Authorized!</h2>
+<div style="padding: 13em 0em;"></div>
+{% endif %} <!-- First if ended -->
+{% else %}
+<h2 style="text-align: center;">You Are Not Authorized!</h2>
+<div style="padding: 13em 0em;"></div>
+{% endif %} <!-- Second if ended -->
+
+
+{% endblock %}

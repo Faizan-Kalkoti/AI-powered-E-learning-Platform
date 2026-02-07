@@ -1,0 +1,43 @@
+{% load static %}
+
+
+<script>
+    function showcompletedcourses(){
+        let studentcourses = document.getElementById('student-content');
+    studentcourses.innerHTML=`
+    <div style="background:lightgrey; padding:2em; border-radius: 1em;">
+      <div>
+        <h2 style="text-align:center;"> Your Completed Courses </h2>
+        <hr>
+      </div>
+      <div style="text-align:center;">
+        <div class="row">
+          <div class="col-lg-12">
+             <img id="robo-img" onclick="robotclick()" style=" transition:1s; width:14em;" src="{% static 'accounts/photos/robot_student_dashboard.png' %}">
+             <span id="robo-course" style="transition: 1s; padding:1em; border-radius:0.5em; background-color:whitesmoke; display:none;"> 
+              Click below to go to the course! <span>
+          </div>
+        </div>
+      </div>
+
+      {% for course in course_completed_list %}
+        <div class="courselink" style="">
+         <a style="color:black; text-decoration: none;" href="{% url 'courses:singlecourse' slug=course.slug %}" > 
+          {{ forloop.counter }}. {{course}} 
+            [ status: <span style="color:green;"> Completed </span> ]
+         </a>
+        </div>
+        <br>
+      {% endfor %}
+
+      {% if not course_completed_list %}
+      <div style="padding:0.3em; text-align:center; font-size: 1.6em; font-weight:500; border: 1px solid black; 
+      border-radius:1em;">
+        No Completed Courses
+      </div>
+      {% endif %}
+
+    </div>
+    `;
+    }
+</script>

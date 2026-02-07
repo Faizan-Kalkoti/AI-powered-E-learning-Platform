@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block content %}
+
+<div class="row" style="margin:0px; padding: 2em;">
+<div class="col-lg-6">
+<div style="padding:2em; background-color: lightgrey;">
+    <h3 style="text-align: center;"> Edit Question</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <div style="text-align:center;"> 
+         <input type="submit" class="btn btn-warning" value="Update Question">
+         <a class="btn btn-dark" style="color:whitesmoke;" onclick="goBack()">
+           Cancel</a>
+        </div>
+    </form>
+</div></div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div style="padding: 2em; background: linear-gradient(to top right, rgb(30,30,30),rgb(50,50,50));">
+    <h3 style="color: white; text-align: center;">Questions of {{course}}</h3>
+</div>
+
+<div class="row" style="margin: 0px; padding: 2em 0.5em">
+    <!--start of first column (main) -->
+    <div class="col-lg-8">
+        <div style="background-color: whitesmoke; padding: 2em;">
+            <h3>Question List  <span style="font-size:0.8em"> (Total questions: {{count}}) </span> </h3><hr>
+            <br>
+        
+            {% if user.is_authenticated and user.teacher %}
+            {% if user.teacher.name == course.made_by_teacher.name %}
+
+            {% for question in questions %}
+            <div style="background-color: rgb(217, 239, 252); padding: 1em; font-size: 1.1em;">
+              <span style="font-weight: bold;"> Question {{forloop.counter}}: </span> <br> 
+              {{question.question}}
+              <br>{{question.id}}<br>
+              <b>A:</b> {{question.options_a}}  <br>
+              <b>B:</b> {{question.options_b}}  <br>
+              <b>C:</b> {{question.options_c}}  <br>
+              <b>D:</b> {{question.options_d}}  <br>
+              <b>Ans: </b>Option {{question.answer}}  <br>
+               <div style="text-align: left;"> <hr>
+                 <b> Level:</b> <span style="color: red;">{{question.level}} </span> &nbsp;
+                 <em> [ belongs to: <span style="color: brown;">{{question.section}}</span> ] </em> <br>
+                    <div style="padding: 0.5em 0em; text-align: left;"> 
+                        <a href="{% url 'coursetests:updatequestion' pk=question.id course_slug=course.slug %}" class="btn btn-dark">Edit this question</a>
+                        <a href="{% url 'coursetests:deletequestion' pk=question.id course_slug=course.slug %}" class="btn btn-danger">Delete question</a>
+                    </div>
+               </div>
+            </div> <br>
+            {% endfor %}
+
+            {% else %}
+            <h2>You are not Authorized to view this!</h2>
+            {% endif %}
+            {% else %}
+            <h2>You are not Authorized to view this!</h2>
+            {% endif %}
+        </div>
+
+        <!-- Pagination in question lists -->
+        <div class="" style="text-align: center; padding-bottom: 1em; background-color: whitesmoke;">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a style="text-decoration: none;" href="?page=1">&laquo; first</a> | 
+                    <a style="text-decoration: none;" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                &nbsp;
+                <span class="current" style="padding: 0em 0.2em;">
+                    Page {{  page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+                &nbsp;
+                {% if page_obj.has_next %}
+                    <a style="text-decoration: none;" href="?page={{ page_obj.next_page_number }}">next</a> | 
+                    <a style="text-decoration: none;" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+
+        <!--Go back button-->
+        <div style="text-align: center;">
+            <br>
+            <a class="btn btn-dark" href="{% url 'courses:singlecourse' slug=course.slug %}">Go back</a>
+        </div>
+
+    </div>
+    <!-- end of main column -->
+
+
+
+    <!-- start of the second column (filter column) -->
+    <div class="col-lg-4">
+        <div style="padding: 2em;">
+          
+          <form method="GET" id="filterquestions">
+            <h3>Filter questions</h3><hr>
+
+            <div class="row" style="margin: 0%;">
+                <div class="col-lg-6">
+                    <h6>Filter by Section </h6>
+                    <select id="section-filt" name="section" class="form-select" aria-label="Default select example">
+                        <option selected value="">None</option>
+                        {% for section in course.contains_sections.all %}
+                          <option value="{{section.slug}}">{{section.section_name}}</option>
+                        {% endfor %}
+                      </select>
+                </div>
+
+                <div class="col-lg-6">
+                    <h6>Filter by Level </h6>
+                    <select id="level-filt" name="level" class="form-select" aria-label="Default select example">
+                        <option selected value="">None</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="expert">Advanced</option>
+                      </select>
+                </div>
+            </div>
+
+            <div class="row" style="margin: 0px; padding:1.1em;">
+                <input class="btn btn-dark" type="submit" value="Filter Questions">
+            </div>
+          </form>
+
+          <div class="row" style="margin: 0px; padding:0em 1.1em;">
+            <a class="btn btn-dark" href="{% url 'coursetests:listquestions' course_slug=course.slug %}">
+                Clear filter</a>
+          </div>
+          
+        </div>
+    </div>
+    <!-- end of the second column -->
+
+</div>
+<!-- end of the row -->
+
+
+<!-- To write the logic of filter questions -->
+<script>
+    document.getElementById('filterquestions').addEventListener('submit', (event)=>{
+        event.preventDefault();
+        var section_value = document.getElementById('section-filt').value;
+        var level_value = document.getElementById('level-filt').value;
+
+        if(section_value === '' && level_value === ''){
+            console.log("No filter");
+        }else if(level_value !== ''){
+            if(level_value === 'easy'){
+                window.location.assign("{% url 'coursetests:listquestions_level' course_slug=course.slug level="easy" %}");
+            }else if(level_value === 'medium'){
+                window.location.assign("{% url 'coursetests:listquestions_level' course_slug=course.slug level="medium" %}");
+            }else if(level_value === "hard"){
+                window.location.assign("{% url 'coursetests:listquestions_level' course_slug=course.slug level="hard" %}");
+            }else if(level_value === "expert"){
+                window.location.assign("{% url 'coursetests:listquestions_level' course_slug=course.slug level="expert" %}");
+            }
+        }else if(section_value !== ''){
+            {% for section in course.contains_sections.all %} 
+               if(section_value === "{{section.slug}}"){
+                window.location.assign("{% url 'coursetests:listquestions_section' course_slug=course.slug section_slug=section.slug %}");
+               }
+            {% endfor %} 
+        }
+    });
+</script>
+<!-- JavaScript ended here -->
+
+{% endblock %}

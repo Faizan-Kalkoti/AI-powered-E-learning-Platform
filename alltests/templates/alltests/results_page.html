@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div style="background-size: cover; background-repeat: no-repeat; background-position: center;
+background-image: url({% static 'coursetests/photos/result_bg.jpg' %});" >
+<!-- Modal Start -->
+<div class="modal fade" id="feedbackresultmodal" data-bs-backdrop="static" style="padding: 1em;" 
+ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" style="max-width:50em;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <h1 class="fs-3" id="Modal_level_title" style="text-align: center; padding-top: 1em;">
+          Your Feedback
+        </h1>
+        <hr>
+        <div class="modal-body" id="Modal_level_body">
+          <div style="text-align:left; font-size:1.1em; padding:1em;">
+              {{feedback|safe}}
+          </div> <!-- Corrected div closing tag here -->
+        </div>
+        <div style="text-align: center; padding-bottom: 1em;">
+          <hr>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal end -->
+  
+
+<br>
+<div class="row" style="text-align: center; padding: 1em; margin: 0%;">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+        <div class="row" style="display:flex; justify-content:center; align-items:center; margin:0px;">
+            <div class="col-lg-10">
+
+                <div style="padding:2em; padding-top:0em; border:1px solid rgb(255, 255, 255); border-radius:1em;
+                backdrop-filter: blur(10px); background-color: #efe3e353;">
+
+                    <br>
+                    <div style="text-align: center; font-size: 3em; font-weight:bold;
+                    color: #6c405c;">Your Test Result</div>
+
+                    <div style="padding:0.5em; text-align:center; padding-top:0em;">
+                        <img style="width: 14em;" src="{% static 'coursetests/photos/robot_Result2.png' %}" alt="">
+                    </div>
+                    
+                <div class="row" style="margin: 0%; display:flex; justify-content:center;">
+                    <div style="font-size: 1.5em; padding:0.5em 1em; box-shadow: 0.4em 0.4em 2em rgb(184, 147, 147); 
+                    border-radius: 1em; width:15em; border-right:1px solid grey; border-left:1px solid grey;
+                    background-color: rgba(255, 255, 255, 0.623);">
+                        Result:  
+                    {% if result_status == 'fail' %}
+                       <span style="color:red; font-weight:bold;">
+                       Fail!</span> 
+                    {% else %}
+                        <span style="color:green; font-weight:bold;">
+                        Pass!</span> 
+                    {% endif %}
+                    </div>
+                </div>
+                
+                    <br>
+
+                <div class="row" style="margin: 0%;">
+
+                    <div class="col-lg-6" style="font-size: 1.3em; padding: 1em;">
+
+                        <div class="row" style="margin:0px; padding:1em; 
+                                 background: rgb(245, 227, 227); border-radius:1em;">
+                            <div class="col-lg-8" style="display:flex; justify-content: center;
+                                 flex-direction: column;">
+                                <div style="text-align: left; font-size: 1.1em;">
+                                      <div>
+                                        You Got: <b>
+                                        {% if right_count %}
+                                            {{right_count}}  </b> /20
+                                        {% else %}
+                                             0 </b> /20
+                                        {% endif %}
+                                      </div>
+                                      <div>
+                                        Unattempted:  <b> {{unattermpted}} </b>
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <img style="width: 5em;" src="{% static 'coursetests/photos/result_icon.png' %}" alt="">
+                            </div>
+                        </div>
+                        
+                    </div>
+
+
+                    <div class="col-lg-6" style="font-size: 1.5em; padding: 0em 1em;
+                    padding-top:1em;">
+                        <div class="row" style="margin: 0px; background-color: rgb(219, 238, 245); 
+                           border-radius: 1em; padding: 0.5em 0em;">
+                            <div class="col-lg-7">
+                                <div style="font-size: 1.2em; padding:1em 0.5em;">
+                                    {% if revision_section %}
+                                           Your Revision Section: 
+                                      <em> {{revision_section}} </em> 
+                                    {% else %}
+                                          No Revision Section!
+                                    {% endif %}
+                                  </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <img style="width: 5em;" src="{% static 'coursetests/photos/books_revision.png' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    
+                </div>
+                    <hr> 
+
+                    <div style="font-size: 1.2em; padding-top: 1em;">
+                        <h4> Your score: {{score}} % </h4>
+                    </div> <br> <br>   
+                    
+                    
+                <div style="display:flex; justify-content:center;">
+                    <div style=" padding:1.3em 2em; width: 30em;
+                    border-radius: 50px; background: linear-gradient(145deg, #cacaca, #f0f0f0);
+                    box-shadow:  20px 20px 60px #bebebe, -20px -20px 60px #ffffff;">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div style="text-align:center;">
+                                <br>
+                                <button style="background: linear-gradient(to top right, #D391B0, #7B4668); 
+                                 border-radius: 0.5em; color: #f0f0f0; text-shadow: 2px 2px 0.1em #6c405c;
+                                 font-size: 1.2em;"
+                                class="btn" data-bs-toggle="modal" data-bs-target="#feedbackresultmodal">
+                                    See Your Feedback
+                                </button><br> <br>
+    
+                                <div style="text-align:center;">
+                                    <a href="{% url  'courses:singlecourse' slug=course.slug %}"  class="btn btn-dark"> Go back </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <img style="width: 12em;" src="{% static 'coursetests/photos/alert.png' %}" alt="">
+                        </div>
+                    </div> <!-- end of row -->
+                    </div>
+                </div> <!-- end of the div for display feedback and graph -->
+
+
+                <br>
+
+                 </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<br>
+</div> <!-- here all divs of this page end! -->
+<!-- End of the div for background-->
+
+
+<script src="{% static 'accounts/js/bootstrap.bundle.min.js' %}"></script> 
+
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+-->
+
+<!-- End of the modal for the course sections for each level -->
+<!-- https://ethereum.org/en/developers/docs/smart-contracts/ -->
+
+
+
+{% endblock %}
