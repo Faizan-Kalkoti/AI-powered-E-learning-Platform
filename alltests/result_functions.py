@@ -14,6 +14,8 @@ from IPython.display import display
 from IPython.display import Markdown
 import misaka
 
+from envfile import GOOGLE_API_KEY 
+
 
 # 1. Generate Feedback
 def GenerateFeedback(curr_student, course, result_status, right_ans, wrong_ans, wrong_answer_questions, result_record):
@@ -46,7 +48,7 @@ def GenerateFeedback(curr_student, course, result_status, right_ans, wrong_ans, 
       print(input_prompt_str)
       print("input prompt is also correct")
 
-      genai.configure(api_key = "AIzaSyArwwwB0pHLnPSTAJsgS7kntXbDkh4XDFY")
+      genai.configure(api_key = GOOGLE_API_KEY)
       print("configured correctly")
       model = genai.GenerativeModel('gemini-pro')
       print("model goes correctly")
